@@ -1,0 +1,43 @@
+{
+  "name": "generator-locutus",
+  "version": "0.7.12",
+  "description": "Yeoman generator combining the best of both worlds : CakePHP for Back-End (with optional support for MongoDB) & SASS-Bootstrap for Front-End development, all of this set up with Grunt & Bower to enable your own workflow and therefore, be more productive !",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/someuser/generator-locutus"
+  },
+  "author": "Florian Gesta <flo.gesta@gmail.com> (http://firstcodeafter.com/#/)",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "~0.4.0",
+    "pad-component": "0.0.1",
+    "yeoman-generator": "^0.16.0",
+    "yosay": "^0.1.0"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/someuser/generator-locutus/issues"
+  },
+  "homepage": "https://github.com/someuser/generator-locutus",
+  "directories": {
+    "test": "test"
+  }
+}
