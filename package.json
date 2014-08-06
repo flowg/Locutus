@@ -6,7 +6,7 @@
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/someuser/generator-locutus"
+    "url": "git://github.com/flowg/Locutus"
   },
   "author": "Florian Gesta <flo.gesta@gmail.com> (http://firstcodeafter.com/#/)",
   "engines": {
@@ -34,9 +34,9 @@
     "yo": ">=1.0.0"
   },
   "bugs": {
-    "url": "https://github.com/someuser/generator-locutus/issues"
+    "url": "https://github.com/flowg/Locutus/issues"
   },
-  "homepage": "https://github.com/someuser/generator-locutus",
+  "homepage": "https://github.com/flowg/Locutus",
   "directories": {
     "test": "test"
   }
