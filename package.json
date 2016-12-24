@@ -1,0 +1,16 @@
+{
+  "name": "generator-locutus",
+  "version": "0.1.0",
+  "description": "A Yeoman generator for MEAN apps with Typescript/Angular 2",
+  "files": [
+    "generators"
+  ],
+  "scripts": {},
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^1.0.1"
+  },
+  "devDependencies": {}
+}
