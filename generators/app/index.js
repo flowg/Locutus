@@ -5,7 +5,8 @@ let Generator = require('yeoman-generator');
 class Locutus extends Generator {
     /**
      * Constructor
-     * @note: arguments and options should be defined in the constructor
+     * @note: arguments and options which can be passed while calling the generator on the CLI
+     * should be defined in the constructor
      */
     constructor(args, opts) {
         // Calling the super constructor is important so our generator is correctly set up
@@ -20,10 +21,14 @@ class Locutus extends Generator {
      * when calling the generator.
      */
 
-    // Your initialization methods (checking current project state, getting configs, etc)
+    /**
+     * Your initialization methods (checking current project state, getting configs, etc)
+     */
     initializing() {}
 
-    // Where you prompt users for options (where you'd call this.prompt())
+    /**
+     * Where you prompt users for options (where you'd call this.prompt())
+     */
     prompting() {
         return this.prompt(
             [
@@ -57,31 +62,46 @@ class Locutus extends Generator {
         });
     }
 
-    // Saving configurations and configure the project (creating .editorconfig files and other metadata files)
+    /**
+     * Saving configurations and configure the project
+     * (creating .editorconfig files and other metadata files)
+     */
     configuring() {
         this.config.set(this.configuration);
     }
 
-    // If the method name doesn't match a priority, it will be pushed to this group
+    /**
+     * If the method name doesn't match a priority, it will be pushed to this group
+     */
     default() {
         // Compose with the requested sub-generator
         let path = `../${this.configuration.appType}`;
         this.composeWith(require.resolve(path));
     }
 
-    // Where you write the generator specific files (see http://yeoman.io/authoring/file-system.html)
+    /**
+     * Where you write the generator specific files
+     * (see http://yeoman.io/authoring/file-system.html)
+     */
     writing() {}
 
-    // Where conflicts about overwriting pre-existing files are handled (used internally)
+    /**
+     * Where conflicts about overwriting pre-existing files are handled
+     * (used internally)
+     */
     conflicts() {}
 
-    // Where installation are run (npm, bower)
+    /**
+     * Where installation are run (npm, bower)
+     */
     install() {
         // Initializing the package.json file, common to all app types
         this.spawnCommandSync('npm', ['init']);
     }
 
-    // Called last, cleanup, say good bye, etc
+    /**
+     * Called last, cleanup, say good bye, etc
+     */
     end() {
         this.log('Assimilation complete');
     }

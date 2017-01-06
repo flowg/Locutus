@@ -5,8 +5,8 @@ let Generator = require('yeoman-generator');
 class LocutusWeb extends Generator {
     /**
      * Constructor
-     *
-     * @note: arguments and options should be defined in the constructor
+     * @note: arguments and options which can be passed while calling the generator on the CLI
+     * should be defined in the constructor
      */
     constructor(args, opts) {
         // Calling the super constructor is important so our generator is correctly set up
@@ -18,30 +18,63 @@ class LocutusWeb extends Generator {
      * when calling the generator.
      */
 
-    // Your initialization methods (checking current project state, getting configs, etc)
+    /**
+     * Your initialization methods (checking current project state, getting configs, etc)
+     */
     initializing() {
         this.log('Web app assimilation process has begun');
     }
 
-    // Where you prompt users for options (where you'd call this.prompt())
-    prompting() {}
+    /**
+     * Where you prompt users for options (where you'd call this.prompt())
+     */
+    prompting() {
+        //TODO: Write the JIT4Dev/AOT4Prod architecture into the templates folder :
+        //TODO: Update the package.json in the /Users/flo/Dev/Formation/Angular2/angular-quickstart-JIT4Dev-AOT4Prod folder
+        //TODO: to the newest version of Angular ; test again the project in all scenarii possible (see your notes)
+        //TODO: Copy the structure into the templates folder
+    }
 
-    // Saving configurations and configure the project (creating .editorconfig files and other metadata files)
+    /**
+     * Saving configurations and configure the project
+     * (creating .editorconfig files and other metadata files)
+     */
     configuring() {}
 
-    // If the method name doesn't match a priority, it will be pushed to this group
+    /**
+     * If the method name doesn't match a priority, it will be pushed to this group
+     */
     default() {}
 
-    // Where you write the generator specific files (routes, controllers, etc)
-    writing() {}
+    /**
+     * Where you write the generator specific files
+     * (see http://yeoman.io/authoring/file-system.html)
+     */
+    writing() {
+        /*
+         * Copying everything from ./templates recursively
+         * into destinationPath : it respects the folder structure
+         */
+        this.fs.copy(
+            this.templatePath(''),
+            this.destinationPath('')
+        );
+    }
 
-    // Where conflicts are handled (used internally)
+    /**
+     * Where conflicts about overwriting pre-existing files are handled
+     * (used internally)
+     */
     conflicts() {}
 
-    // Where installation are run (npm, bower)
+    /**
+     * Where installations are run (npm, bower)
+     */
     install() {}
 
-    // Called last, cleanup, say good bye, etc
+    /**
+     * Called last, cleanup, say good bye, etc
+     */
     end() {}
 
     /**

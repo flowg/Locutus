@@ -1,0 +1,52 @@
+{
+  "name": "Insert-app-name",
+  "version": "1.0.0",
+  "description": "Insert-description-here",
+  "scripts": {
+    "start": "tsc && node-sass --output-style compressed -o app app && concurrently \"tsc -w\" \"node-sass -w --output-style compressed -o app app\" \"lite-server\" ",
+    "lint": "tslint ./app/**/*.ts -t verbose",
+    "sass": "node-sass --output-style compressed -o app app",
+    "sass:w": "node-sass -w --output-style compressed -o app app",
+    "lite": "lite-server",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "copy-to-aot": "node app/aot/copy-dist-files.js",
+    "build:aot": "node app/aot/copy-dist-files.js && ngc -p app/aot/tsconfig-aot.json && rollup -c app/aot/rollup-config.js",
+    "lite:aot": "lite-server -c app/aot/bs-config.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/common": "~2.4.1",
+    "@angular/compiler": "~2.4.1",
+    "@angular/compiler-cli": "^2.4.1",
+    "@angular/core": "~2.4.1",
+    "@angular/forms": "~2.4.1",
+    "@angular/http": "~2.4.1",
+    "@angular/platform-browser": "~2.4.1",
+    "@angular/platform-browser-dynamic": "~2.4.1",
+    "@angular/platform-server": "^2.4.1",
+    "@angular/router": "~3.4.1",
+    "angular-in-memory-web-api": "~0.2.4",
+    "core-js": "^2.4.1",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.1",
+    "systemjs": "0.19.40",
+    "zone.js": "^0.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.52",
+    "concurrently": "^3.1.0",
+    "fs-extra": "^1.0.0",
+    "lite-server": "^2.2.2",
+    "node-sass": "^4.0.0",
+    "rollup": "^0.37.0",
+    "rollup-plugin-commonjs": "^5.0.5",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "tslint": "^3.15.1",
+    "typescript": "~2.0.10"
+  },
+  "repository": {}
+}
