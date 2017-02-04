@@ -97,6 +97,9 @@ class Locutus extends Generator {
     install() {
         // Initializing the package.json file, common to all app types
         this.spawnCommandSync('npm', ['init']);
+
+        // Installing everything in the package.json file, common to all app types
+        this.npmInstall();
     }
 
     /**

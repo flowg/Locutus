@@ -1,7 +1,7 @@
 {
   "name": "generator-locutus",
   "version": "0.1.0",
-  "description": "A Yeoman generator for MEAN apps with Typescript/Angular 2 and NativeScript for Mobile native apps.",
+  "description": "A Yeoman generator for MEAN apps with Typescript/Angular and NativeScript for Mobile native apps.",
   "files": [
     "generators"
   ],
@@ -12,5 +12,9 @@
   "dependencies": {
     "yeoman-generator": "^1.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^6.0.52",
+    "tslint": "^3.15.1",
+    "typescript": "~2.0.10"
+  }
 }

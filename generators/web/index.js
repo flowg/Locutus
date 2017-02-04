@@ -29,10 +29,11 @@ class LocutusWeb extends Generator {
      * Where you prompt users for options (where you'd call this.prompt())
      */
     prompting() {
-        //TODO: Write the JIT4Dev/AOT4Prod architecture into the templates folder :
-        //TODO: Update the package.json in the /Users/flo/Dev/Formation/Angular2/angular-quickstart-JIT4Dev-AOT4Prod folder
-        //TODO: to the newest version of Angular ; test again the project in all scenarii possible (see your notes)
-        //TODO: Copy the structure into the templates folder
+        // TODO: use the www and app.js from DTEC-Website ( no change from the version in express-generator ) and adapt them
+        // TODO: try to go to Typescript for Back-End too
+
+        // TODO: replace the placeholders in the package.json with user-provided infos
+        // TODO: enable the user to choose the view engine in Express
     }
 
     /**

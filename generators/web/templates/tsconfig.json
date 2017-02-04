@@ -1,3 +1,14 @@
+/*
+ * NO NEED TO SPECIFY "types" or "typeRoots" since :
+ *
+ * "By default all visible “@types” packages are included in your compilation.
+ *  Packages in node_modules/@types of any enclosing folder are considered visible;
+ *  specifically, that means packages within ./node_modules/@types/, ../node_modules/@types/,
+ *  ../../node_modules/@types/, and so on.
+ *  If typesRoots is specified, only packages under typeRoots will be included."
+ *
+ * https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+ */
 {
   "compilerOptions": {
     "target": "es5",
@@ -8,14 +19,11 @@
     "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "suppressImplicitAnyIndexErrors": true
   },
   "compileOnSave": true,
   "exclude": [
     "node_modules/*",
-    "app/aot/*"
+    "Angular/aot/*"
   ]
 }
