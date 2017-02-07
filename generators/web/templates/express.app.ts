@@ -1,9 +1,16 @@
 "use strict";
 
 /**
+ * Third-party imports
+ */
+import * as express from "express";
+import Request = express.Request;
+import Response = express.Response;
+import NextFunction = express.NextFunction;
+
+/**
  * Third-party requires
  */
-const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
@@ -79,19 +86,27 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());*/
 
-/*// Setting up all possible folders for serving static files
+// Setting up all possible folders for serving static files ( JS, CSS, Fonts, Images )
+app.use(express.static(path.join(__dirname, 'Angular')));
 app.use(express.static(path.join(__dirname, 'Config')));
 app.use(express.static(path.join(__dirname, 'Public')));
-app.use(express.static(path.resolve(__dirname, '..', 'node_modules')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
-// Mounting routes
-app.use('/back', userRoutes);
+/**
+ * App routing
+ */
+// Delegating routing to Angular router for non API routes
+app.get('/*', (req: Request, res: Response, next: NextFunction) => {
+    res.render('index');
+});
+
+/*app.use('/back', userRoutes);
 app.use('/back', privateRoutes);
 app.use('/', frontRoutes);*/
 
 // If you get here, no route has matched : catch 404 and forward to error handlers
-app.use(function (req, res, next) {
-    let err = new Error('Not Found');
+app.use((req: Request, res: Response, next: NextFunction) => {
+    let err: any = new Error('Not Found');
     err.status = 404;
     next(err);
 });
@@ -101,7 +116,7 @@ app.use(function (req, res, next) {
  */
 // Development error handler : will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
+    app.use((err: any, req: Request, res: Response, next: NextFunction) => {
         console.log(err);
         console.log(req.headers);
         res.status(err.status || 500);
@@ -113,7 +128,7 @@ if (app.get('env') === 'development') {
 }
 
 // Production error handler : no stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

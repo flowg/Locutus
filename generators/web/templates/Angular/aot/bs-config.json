@@ -1,6 +1,0 @@
-{
-    "port": 8000,
-    "files": ["./Angular/aot/**/*.{html,htm,css,js}"],
-    "server": { "baseDir": "./Angular/aot" }
-}
-

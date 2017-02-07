@@ -1,8 +1,13 @@
-**Use-cases to check**
+**Workflow to check**
 
 At the root of the project :
-1. `npm start` => _should launch the JIT app with live-reload_
-2. Make a change to JIT app => _should reflect it automatically in the browser_
-3. `npm run lint` => _should check validity of files in the app_
-4. `npm run copy-to-aot` => _should add files to /app/aot_
-5. `npm run build:aot && npm run lite:aot` => _should AOT-compile the app, Tree Shake it and launch it in the browser_
+1. `npm start` => _Should compile TS to JS and SASS to CSS + launch the Express server app, with the JIT Angular app + 
+file watch on both. Then open up a new Terminal tab, since this one will be busy displaying the Express server messages._
+2. Make a change to the JIT Angular app => _Should reflect it in the browser **after refreshing the page**, since file 
+watch for tsc and node-sass will recompile everything changed._
+3. Make a change to the Express server app => _Ctrl+C in the Terminal tab displaying the Express server app, 
+then `npm start` again._
+3. `npm run lint` => _Should check validity of TS files in the app._
+4. `npm run build` => _Should copy necessary files in /Angular/aot folder to prepare for compilation + AOT compile 
+the Angular app + Tree Shake the AOT compiled app_
+5. `npm run start:aot` => _Should launch the Express server app, with the AOT Angular app._
