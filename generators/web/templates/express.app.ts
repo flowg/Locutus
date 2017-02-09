@@ -17,54 +17,62 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 /*const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-const flash = require('connect-flash');
-const mongoose = require('mongoose');
-const passport = require('passport');*/
+ const MongoDBStore = require('connect-mongodb-session')(session);
+ const flash = require('connect-flash');
+ const mongoose = require('mongoose');
+ const passport = require('passport');*/
 
 /**
  * App requires
  */
 /*// Registering schemas for all models in global mongoose instance
-require('./Models/Users');
-require('./Models/TeamMembers');
+ require('./Models/Users');
+ require('./Models/TeamMembers');
 
-// Getting Passport configuration
-require('./Config/passport');*/
+ // Getting Passport configuration
+ require('./Config/passport');*/
 
 /*// Getting routes configuration
-const frontRoutes = require('./Routing/front');
-const privateRoutes = require('./Routing/Back/Private/private');
-const userRoutes = require('./Routing/Back/user').router;*/
+ const frontRoutes = require('./Routing/front');
+ const privateRoutes = require('./Routing/Back/Private/private');
+ const userRoutes = require('./Routing/Back/user').router;*/
 
 /**
  * App setup
  */
 const app = express();
 
+// If specified in CLI, set environment mode
+let env = process.argv.filter(el => el.indexOf("--env=") > -1).pop();
+if (env) {
+    env = env.split("=").pop();
+    app.set('env', env);
+}
+
 // View engine setup
-app.set('views', path.join(__dirname, 'Angular'));
+let viewsFolder = (app.get("env") === "development") ? 'Angular' : 'Angular/aot';
+app.set('views', path.join(__dirname, viewsFolder));
 app.set('view engine', 'ejs');
 
 /*// Dealing with Database
-const mongoURL = `mongodb://${process.env.MONGOHOST}/DTEC_Website`;
-mongoose.connect(mongoURL);
+ const mongoURL = `mongodb://${process.env.MONGOHOST}`;
+ mongoose.connect(mongoURL);
 
-const store = new MongoDBStore(
-    {
-        uri: mongoURL,
-        collection: 'sessions'
-    }
-);
-store.on('error', function (error) {
-    // Also get an error here
-});*/
+ const store = new MongoDBStore(
+ {
+ uri: mongoURL,
+ collection: 'sessions'
+ }
+ );
+ store.on('error', function (error) {
+ // Also get an error here
+ });*/
 
 /**
  * App-level Middlewares
  */
 // Uncomment after placing your favicon in /Public
-//app.use(favicon(path.join(__dirname, 'Public', 'favicon.ico')));
+/*app.use(favicon(path.join(__dirname, 'Public', 'favicon.ico')));*/
 app.use(logger('dev'));
 // This app only parses automatically application/json & application/x-www-form-urlencoded bodies
 app.use(bodyParser.json());
@@ -72,22 +80,22 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 /*app.use(session({
-    cookie: {
-        path: '/back'
-        //domain: ''
-    },
-    resave: false,
-    saveUninitialized: false,
-    secret: 'winter is coming',
-    store: store,
-    unset: 'destroy'
-}));
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());*/
+ cookie: {
+ path: '/back'
+ //domain: ''
+ },
+ resave: false,
+ saveUninitialized: false,
+ secret: 'winter is coming',
+ store: store,
+ unset: 'destroy'
+ }));
+ app.use(flash());
+ app.use(passport.initialize());
+ app.use(passport.session());*/
 
 // Setting up all possible folders for serving static files ( JS, CSS, Fonts, Images )
-app.use(express.static(path.join(__dirname, 'Angular')));
+app.use(express.static(path.join(__dirname, viewsFolder)));
 app.use(express.static(path.join(__dirname, 'Config')));
 app.use(express.static(path.join(__dirname, 'Public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
@@ -101,8 +109,8 @@ app.get('/*', (req: Request, res: Response, next: NextFunction) => {
 });
 
 /*app.use('/back', userRoutes);
-app.use('/back', privateRoutes);
-app.use('/', frontRoutes);*/
+ app.use('/back', privateRoutes);
+ app.use('/', frontRoutes);*/
 
 // If you get here, no route has matched : catch 404 and forward to error handlers
 app.use((req: Request, res: Response, next: NextFunction) => {

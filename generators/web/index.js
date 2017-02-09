@@ -29,10 +29,10 @@ class LocutusWeb extends Generator {
      * Where you prompt users for options (where you'd call this.prompt())
      */
     prompting() {
-        // TODO: use the www and app.js from DTEC-Website ( no change from the version in express-generator ) and adapt them
+        // TODO: use the www and app.js from DTEC-Website and adapt them ( done when no more code commented )
         // TODO: try to go to Typescript for Back-End too
 
-        // TODO: implement and test the different steps for the workflow, described in the README file ( only left the last one )
+        // TODO: work on the debug module and check Node Hero pdf
 
         // TODO: replace the placeholders in the package.json with user-provided infos
         // TODO: enable the user to choose the view engine in Express

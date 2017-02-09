@@ -8,12 +8,12 @@
     "sass": "node-sass --output-style compressed -o Angular Angular",
     "sass:w": "node-sass -w --output-style compressed -o Angular Angular",
     "start": "npm run tsc && npm run sass && concurrently \"npm run tsc:w\" \"npm run sass:w\" \"node ./www\" ",
-    "lint": "tslint ./Angular/**/*.ts -t verbose",
+    "lint": "./node_modules/tslint/bin/tslint './**/*.ts' -t verbose -e './node_modules/**/*.ts'",
     "copy-to-aot": "node Angular/aot/copy-dist-files.js",
     "aot-compile": "ngc -p Angular/aot/tsconfig-aot.json",
     "tree-shake": "rollup -c Angular/aot/rollup-config.js",
-    "build": "npm run copy-to-aot && npm run aot-compile && npm run tree-shake",
-    "start:aot": "node ./www"
+    "build": "npm run tsc && npm run sass && npm run copy-to-aot && npm run aot-compile && npm run tree-shake",
+    "start:aot": "node ./www --env=production"
   },
   "keywords": [],
   "author": "",
