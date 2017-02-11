@@ -32,7 +32,13 @@ class LocutusWeb extends Generator {
         // TODO: use the www and app.js from DTEC-Website and adapt them ( done when no more code commented )
         // TODO: try to go to Typescript for Back-End too
 
-        // TODO: work on the debug module and check Node Hero pdf
+        /*
+         * TODO: work on the debug module and check Node Hero pdf:
+         * https://docs.npmjs.com/cli/run-script
+         * https://www.npmjs.com/package/debug
+         * TODO: create a node script to enable the user to start the Express server app via npm start +
+         * TODO: choosing the debugger he wants to use for this time ( see with debug )
+         */
 
         // TODO: replace the placeholders in the package.json with user-provided infos
         // TODO: enable the user to choose the view engine in Express

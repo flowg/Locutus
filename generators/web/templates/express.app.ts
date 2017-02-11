@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 /**
  * Third-party imports
  */
-import * as express from "express";
+import * as express from 'express';
 import Request = express.Request;
 import Response = express.Response;
 import NextFunction = express.NextFunction;
@@ -12,7 +12,7 @@ import NextFunction = express.NextFunction;
  * Third-party requires
  */
 const path = require('path');
-const favicon = require('serve-favicon');
+/*const favicon = require('serve-favicon');*/
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -43,14 +43,14 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // If specified in CLI, set environment mode
-let env = process.argv.filter(el => el.indexOf("--env=") > -1).pop();
+let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
 if (env) {
-    env = env.split("=").pop();
+    env = env.split('=').pop();
     app.set('env', env);
 }
 
 // View engine setup
-let viewsFolder = (app.get("env") === "development") ? 'Angular' : 'Angular/aot';
+let viewsFolder = (app.get('env') === 'development') ? 'Angular' : 'Angular/aot';
 app.set('views', path.join(__dirname, viewsFolder));
 app.set('view engine', 'ejs');
 
