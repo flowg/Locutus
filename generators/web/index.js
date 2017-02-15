@@ -33,11 +33,7 @@ class LocutusWeb extends Generator {
         // TODO: try to go to Typescript for Back-End too
 
         /*
-         * TODO: work on the debug module and check Node Hero pdf:
-         * https://docs.npmjs.com/cli/run-script
-         * https://www.npmjs.com/package/debug
-         * TODO: create a node script to enable the user to start the Express server app via npm start +
-         * TODO: choosing the debugger he wants to use for this time ( see with debug )
+         * TODO: update the README file to describe the available scripts and the workflow
          */
 
         // TODO: replace the placeholders in the package.json with user-provided infos
