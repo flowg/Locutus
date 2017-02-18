@@ -32,10 +32,6 @@ class LocutusWeb extends Generator {
         // TODO: use the www and app.js from DTEC-Website and adapt them ( done when no more code commented )
         // TODO: try to go to Typescript for Back-End too
 
-        /*
-         * TODO: update the README file to describe the available scripts and the workflow
-         */
-
         // TODO: replace the placeholders in the package.json with user-provided infos
         // TODO: enable the user to choose the view engine in Express
     }
