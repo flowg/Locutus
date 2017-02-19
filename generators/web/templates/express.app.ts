@@ -1,21 +1,21 @@
 'use strict';
 
 /**
- * Third-party imports
+ * Third-party imports ( https://www.npmjs.com/~types )
  */
 import * as express from 'express';
 import Request = express.Request;
 import Response = express.Response;
 import NextFunction = express.NextFunction;
+import * as path from 'path';
+import * as logger from 'morgan';
+import * as cookieParser from 'cookie-parser';
+import * as bodyParser from 'body-parser';
 
 /**
  * Third-party requires
  */
-const path = require('path');
 /*const favicon = require('serve-favicon');*/
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 /*const session = require('express-session');
  const MongoDBStore = require('connect-mongodb-session')(session);
  const flash = require('connect-flash');

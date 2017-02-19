@@ -1,4 +1,4 @@
-# Locutus
+# Locutus Generated app ( replace with app name )
 
 ## Locutus Workflow
 
