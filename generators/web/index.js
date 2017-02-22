@@ -32,6 +32,8 @@ class LocutusWeb extends Generator {
         // TODO: use the www and app.js from DTEC-Website and adapt them ( done when no more code commented )
         // TODO: try to go to Typescript for Back-End too
 
+        // TODO: read https://angular.io/docs/ts/latest/guide/reactive-forms.html
+
         /*
          * TODO: implement DB interaction with MongoDB & Mongoose and a first example of CRUD
          * TODO: 1) What to implement ? a basic "Posts for a Blog" Model :
@@ -76,6 +78,29 @@ class LocutusWeb extends Generator {
                 globOptions: { dot: true }
             }
         );
+
+        /*
+         * Copying a file with a <%=  %> placeholder in it.
+         * The template root is by default ./templates/ .
+         * The destination root is where the end user will bootstrap its project
+         */
+        let filesToCopy = [
+            {
+                name: "express.app.ts",
+                replacements: {
+                    useDB: this.config.get('useDB'),
+                    dbName: this.config.get('dbName')
+                }
+            }
+        ];
+
+        for (let file of filesToCopy) {
+            this.fs.copyTpl(
+                this.templatePath(file.name),
+                this.destinationPath(file.name),
+                file.replacements
+            );
+        }
     }
 
     /**

@@ -1,6 +1,10 @@
 'use strict';
 
-let Generator = require('yeoman-generator');
+/**
+ * Third-party requires
+ */
+const Generator = require('yeoman-generator');
+const chalk = require('chalk');
 
 class Locutus extends Generator {
     /**
@@ -52,12 +56,30 @@ class Locutus extends Generator {
                             value: 'mobile'
                         }
                     ]
-                }
+                },
+                {
+                    type    : 'confirm',
+                    name    : 'useDB',
+                    message : 'Will your application use a database?',
+                    default : true
+                },
+                {
+                    type    : 'input',
+                    name    : 'dbName',
+                    message : 'Choose a name for the database',
+                    default : 'test',
+                    when    : answers => answers.useDB
+                },
             ]
         ).then((answers) => {
             this.configuration = {
                 appName: answers.appName,
-                appType: answers.appType
+                appType: answers.appType,
+                useDB: answers.useDB
+            };
+
+            if (answers.useDB) {
+                this.configuration.dbName = answers.dbName;
             }
         });
     }
@@ -107,6 +129,10 @@ class Locutus extends Generator {
      */
     end() {
         this.log('Assimilation complete');
+
+        if (this.configuration.useDB) {
+            this.log(chalk.red("\nDon't forget to install MongoDB and run a mongod server before using 'npm start'\n"));
+        }
     }
 
     /**

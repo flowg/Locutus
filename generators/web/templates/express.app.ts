@@ -8,9 +8,13 @@ import Request = express.Request;
 import Response = express.Response;
 import NextFunction = express.NextFunction;
 import * as path from 'path';
+import * as debugRaw from 'debug';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
+//<% if (useDB) { %>
+import * as mongoose from 'mongoose';
+//<% } %>
 
 /**
  * Third-party requires
@@ -19,17 +23,15 @@ import * as bodyParser from 'body-parser';
 /*const session = require('express-session');
  const MongoDBStore = require('connect-mongodb-session')(session);
  const flash = require('connect-flash');
- const mongoose = require('mongoose');
  const passport = require('passport');*/
 
 /**
  * App requires
  */
-/*// Registering schemas for all models in global mongoose instance
- require('./Models/Users');
- require('./Models/TeamMembers');
+// Registering schemas for all models in global mongoose instance
+import './Models/Blog';
 
- // Getting Passport configuration
+/*/ Getting Passport configuration
  require('./Config/passport');*/
 
 /*// Getting routes configuration
@@ -41,6 +43,7 @@ import * as bodyParser from 'body-parser';
  * App setup
  */
 const app = express();
+const debug = debugRaw('core');
 
 // If specified in CLI, set environment mode
 let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
@@ -54,11 +57,23 @@ let viewsFolder = (app.get('env') === 'development') ? 'Angular' : 'Angular/aot'
 app.set('views', path.join(__dirname, viewsFolder));
 app.set('view engine', 'ejs');
 
-/*// Dealing with Database
- const mongoURL = `mongodb://${process.env.MONGOHOST}`;
- mongoose.connect(mongoURL);
+//<% if (useDB) { %>
+// Dealing with Database
+const dbName = '<%= dbName %>';
+const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
+mongoose.connect(mongoURL);
 
- const store = new MongoDBStore(
+mongoose.connection.once('open', () => {
+    let Blog = mongoose.model('Blog');
+    let blog = new Blog({ name: 'My Blog' });
+
+    blog.save((err: Error, blog: any) => {
+        debug(blog);
+    });
+});
+//<% } %>
+
+/*const store = new MongoDBStore(
  {
  uri: mongoURL,
  collection: 'sessions'
