@@ -30,6 +30,8 @@ import * as mongoose from 'mongoose';
  */
 // Registering schemas for all models in global mongoose instance
 import './Models/Blog';
+import './Models/Post';
+import './Models/User';
 
 /*/ Getting Passport configuration
  require('./Config/passport');*/
@@ -65,10 +67,44 @@ mongoose.connect(mongoURL);
 
 mongoose.connection.once('open', () => {
     let Blog = mongoose.model('Blog');
-    let blog = new Blog({ name: 'My Blog' });
+    let User = mongoose.model('User');
+    let Post = mongoose.model('Post');
+
+    let user = new User({
+        firstName: 'Tata',
+        lastName: 'Toto'
+    });
+    let blog = new Blog({
+        name: 'My Blog',
+        creator: user._id
+    });
+    let post = new Post({
+        author: user._id,
+        blog: blog._id
+    });
+
+    user.save((err: Error, user: any) => {
+        debug(user);
+    });
 
     blog.save((err: Error, blog: any) => {
         debug(blog);
+    });
+
+    post.save((err: Error, post: any) => {
+        debug(post);
+
+        Blog.find({}).populate('posts creator').exec(function(error, blogs) {
+            debug(blogs);
+
+            for (blog of blogs) {
+                debug('-----------------> Showing blog id: ', blog._id);
+
+                for (post of blog['posts']) {
+                    debug('Showing post : ', post);
+                }
+            }
+        });
     });
 });
 //<% } %>

@@ -18,10 +18,11 @@ const options = {
 };
 
 // Document properties
-const BlogSchema = new Schema({
-    name: String,
-    creator: { type: Schema.Types.ObjectId, ref: 'User' },
-    intro:  String,
+const PostSchema = new Schema({
+    title: String,
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    body: String,
+    blog: { type: Schema.Types.ObjectId, ref: 'Blog' },
     visibility: { type: Boolean, default: true }
 }, options);
 
@@ -56,13 +57,8 @@ const BlogSchema = new Schema({
  *      foreignField: 'schema2Field'    // is equal to `schema2Field` ( in schema2 )
  *  });
  */
-BlogSchema.virtual('posts', {
-    ref: 'Post',
-    localField: '_id',
-    foreignField: 'blog'
-});
 
 /**
  * Model compilation
  */
-mongoose.model('Blog', BlogSchema);
+mongoose.model('Post', PostSchema);

@@ -10,7 +10,7 @@
     "lint": "tslint './**/*.ts' -t verbose -e './node_modules/**/*.ts' | node ./bin/terminal-display.js --prefix=tslint --color=red",
     "lint:w": "onchange './**/*.ts' -w -i -- npm run lint",
     "watch": "concurrently --kill-others --prefix '\b' 'npm run lint:w' 'npm run tsc:w' 'npm run sass:w'",
-    "start": "node ./bin/start-express.js",
+    "start": "npm run lint && npm run tsc && npm run sass && node ./bin/start-express.js",
     "copy-to-aot": "node Angular/aot/copy-dist-files.js",
     "aot-compile": "ngc -p Angular/aot/tsconfig-aot.json",
     "tree-shake": "rollup -c Angular/aot/rollup-config.js",

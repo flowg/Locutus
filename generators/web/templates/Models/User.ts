@@ -18,11 +18,11 @@ const options = {
 };
 
 // Document properties
-const BlogSchema = new Schema({
-    name: String,
-    creator: { type: Schema.Types.ObjectId, ref: 'User' },
-    intro:  String,
-    visibility: { type: Boolean, default: true }
+const UserSchema = new Schema({
+    firstName: String,
+    lastName: String,
+    email: String,
+    role: String
 }, options);
 
 /*
@@ -56,13 +56,11 @@ const BlogSchema = new Schema({
  *      foreignField: 'schema2Field'    // is equal to `schema2Field` ( in schema2 )
  *  });
  */
-BlogSchema.virtual('posts', {
-    ref: 'Post',
-    localField: '_id',
-    foreignField: 'blog'
+UserSchema.virtual('name').get(() => {
+    return this.firstName + ' ' + this.lastName;
 });
 
 /**
  * Model compilation
  */
-mongoose.model('Blog', BlogSchema);
+mongoose.model('User', UserSchema);

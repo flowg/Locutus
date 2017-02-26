@@ -36,8 +36,7 @@ class LocutusWeb extends Generator {
 
         /*
          * TODO: implement DB interaction with MongoDB & Mongoose and a first example of CRUD
-         * TODO: 1) What to implement ? a basic "Posts for a Blog" Model :
-         * TODO: Comment documents have a reference to their associated Post
+         * TODO: 1) What to implement ? a basic "Posts for a Blog" Model
          * TODO: 2) How to implement ? read about Mongoose (http://mongoosejs.com/docs/index.html)
          * TODO: and API naming best practices (http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api,
          * TODO: https://blog.philipphauer.de/restful-api-design-best-practices/, http://gaboesquivel.com/blog/2015/best-practices-for-designing-web-apis/)
@@ -46,6 +45,8 @@ class LocutusWeb extends Generator {
         // TODO: create a way to generate automatically a skeleton CRUD for a given Model
 
         // TODO: implement login feature with Passport and JWT
+
+        // TODO: implement the AssimilatedFormsModule and find a way to put the correct type on Metadata classes
 
         // TODO: replace the placeholders in the package.json & README file with user-provided infos
         // TODO: enable the user to choose the view engine in Express
