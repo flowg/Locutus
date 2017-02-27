@@ -14,6 +14,7 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 //<% if (useDB) { %>
 import * as mongoose from 'mongoose';
+require('mongoose').Promise = global.Promise;
 //<% } %>
 
 /**
@@ -28,10 +29,15 @@ import * as mongoose from 'mongoose';
 /**
  * App requires
  */
+//<% if (useDB) { %>
 // Registering schemas for all models in global mongoose instance
 import './Models/Blog';
+import { BlogDoc } from './Models/Blog';
 import './Models/Post';
+import { PostDoc } from './Models/Post';
 import './Models/User';
+import { UserDoc } from './Models/User';
+//<% } %>
 
 /*/ Getting Passport configuration
  require('./Config/passport');*/
@@ -61,7 +67,7 @@ app.set('view engine', 'ejs');
 
 //<% if (useDB) { %>
 // Dealing with Database
-const dbName = '<%= dbName %>';
+const dbName = 'test';
 const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
 mongoose.connect(mongoURL);
 
@@ -70,40 +76,32 @@ mongoose.connection.once('open', () => {
     let User = mongoose.model('User');
     let Post = mongoose.model('Post');
 
-    let user = new User({
+    let userDoc = new User({
         firstName: 'Tata',
         lastName: 'Toto'
     });
-    let blog = new Blog({
+    let blogDoc = new Blog({
         name: 'My Blog',
-        creator: user._id
+        creator: userDoc._id
     });
-    let post = new Post({
-        author: user._id,
-        blog: blog._id
+    let postDoc = new Post({
+        author: userDoc._id,
+        blog: blogDoc._id
     });
 
-    user.save((err: Error, user: any) => {
+    userDoc.save((err: Error, user: UserDoc) => {
         debug(user);
     });
 
-    blog.save((err: Error, blog: any) => {
+    blogDoc.save((err: Error, blog: BlogDoc) => {
         debug(blog);
     });
 
-    post.save((err: Error, post: any) => {
+    postDoc.save((err: Error, post: PostDoc) => {
         debug(post);
 
-        Blog.find({}).populate('posts creator').exec(function(error, blogs) {
+        Blog.find({}).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
             debug(blogs);
-
-            for (blog of blogs) {
-                debug('-----------------> Showing blog id: ', blog._id);
-
-                for (post of blog['posts']) {
-                    debug('Showing post : ', post);
-                }
-            }
         });
     });
 });
