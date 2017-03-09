@@ -15,7 +15,7 @@ class LocutusMobile extends Generator {
 
     /**
      * Methods considered as tasks, which will automatically be run in sequence
-     * when calling the generator.
+     * when calling the generator
      */
 
     /**
@@ -65,7 +65,7 @@ class LocutusMobile extends Generator {
 
     /**
      * Methods considered as private from the generator run loop's point of view.
-     * They have to be called explicitly.
+     * They have to be called explicitly
      * @private
      */
 }

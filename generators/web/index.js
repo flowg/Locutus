@@ -1,6 +1,7 @@
 'use strict';
 
 let Generator = require('yeoman-generator');
+let copyTemplatedFiles = require('../app/common-helpers').copyTemplatedFiles;
 
 class LocutusWeb extends Generator {
     /**
@@ -15,7 +16,7 @@ class LocutusWeb extends Generator {
 
     /**
      * Methods considered as tasks, which will automatically be run in sequence
-     * when calling the generator.
+     * when calling the generator
      */
 
     /**
@@ -87,21 +88,29 @@ class LocutusWeb extends Generator {
          */
         let filesToCopy = [
             {
+                name: "package.json",
+                replacements: {
+                    useDB: this.config.get('useDB'),
+                    useJWT: this.config.get('useJWT')
+                }
+            },
+            {
                 name: "express.app.ts",
                 replacements: {
                     useDB: this.config.get('useDB'),
                     dbName: this.config.get('dbName')
                 }
+            },
+            {
+                name: "Angular/RootModule/central-nexus.service.ts",
+                replacements: {
+                    useJWT: this.config.get('useJWT')
+                }
             }
         ];
 
-        for (let file of filesToCopy) {
-            this.fs.copyTpl(
-                this.templatePath(file.name),
-                this.destinationPath(file.name),
-                file.replacements
-            );
-        }
+        let copyTemplatedFilesWeb = copyTemplatedFiles.bind(this);
+        copyTemplatedFilesWeb(filesToCopy);
     }
 
     /**
@@ -122,7 +131,7 @@ class LocutusWeb extends Generator {
 
     /**
      * Methods considered as private from the generator run loop's point of view.
-     * They have to be called explicitly.
+     * They have to be called explicitly
      * @private
      */
 }

@@ -22,7 +22,7 @@ class Locutus extends Generator {
 
     /**
      * Methods considered as tasks, which will automatically be run in sequence
-     * when calling the generator.
+     * when calling the generator
      */
 
     /**
@@ -70,12 +70,19 @@ class Locutus extends Generator {
                     default : 'test',
                     when    : answers => answers.useDB
                 },
+                {
+                    type    : 'confirm',
+                    name    : 'useJWT',
+                    message : 'Will your application use JSON Web Tokens to handle authentication?',
+                    default : true
+                }
             ]
         ).then((answers) => {
             this.configuration = {
                 appName: answers.appName,
                 appType: answers.appType,
-                useDB: answers.useDB
+                useDB: answers.useDB,
+                useJWT: answers.useJWT
             };
 
             if (answers.useDB) {
@@ -137,7 +144,7 @@ class Locutus extends Generator {
 
     /**
      * Methods considered as private from the generator run loop's point of view.
-     * They have to be called explicitly.
+     * They have to be called explicitly
      * @private
      */
 }

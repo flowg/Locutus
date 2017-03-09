@@ -12,10 +12,8 @@ import * as debugRaw from 'debug';
 import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
-//<% if (useDB) { %>
-import * as mongoose from 'mongoose';
-require('mongoose').Promise = global.Promise;
-//<% } %>
+/*<% if (useDB) { %>*/import * as mongoose from 'mongoose';
+require('mongoose').Promise = global.Promise;/*<% } %>*/
 
 /**
  * Third-party requires
@@ -29,15 +27,13 @@ require('mongoose').Promise = global.Promise;
 /**
  * App requires
  */
-//<% if (useDB) { %>
-// Registering schemas for all models in global mongoose instance
+/*<% if (useDB) { %>*/// Registering schemas for all models in global mongoose instance
 import './Models/Blog';
 import { BlogDoc } from './Models/Blog';
 import './Models/Post';
 import { PostDoc } from './Models/Post';
 import './Models/User';
-import { UserDoc } from './Models/User';
-//<% } %>
+import { UserDoc } from './Models/User';/*<% } %>*/
 
 /*/ Getting Passport configuration
  require('./Config/passport');*/
@@ -65,8 +61,7 @@ let viewsFolder = (app.get('env') === 'development') ? 'Angular' : 'Angular/aot'
 app.set('views', path.join(__dirname, viewsFolder));
 app.set('view engine', 'ejs');
 
-//<% if (useDB) { %>
-// Dealing with Database
+/*<% if (useDB) { %>*/// Dealing with Database
 const dbName = 'test';
 const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
 mongoose.connect(mongoURL);
@@ -104,8 +99,7 @@ mongoose.connection.once('open', () => {
             debug(blogs);
         });
     });
-});
-//<% } %>
+});/*<% } %>*/
 
 /*const store = new MongoDBStore(
  {
