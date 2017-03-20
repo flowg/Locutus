@@ -1,7 +1,8 @@
 'use strict';
 
-let Generator = require('yeoman-generator');
+let Generator          = require('yeoman-generator');
 let copyTemplatedFiles = require('../app/common-helpers').copyTemplatedFiles;
+let formatForPackageJSONName = require('../app/common-helpers').formatForPackageJSONName;
 
 class LocutusWeb extends Generator {
     /**
@@ -42,14 +43,26 @@ class LocutusWeb extends Generator {
          * TODO: and API naming best practices (http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api,
          * TODO: https://blog.philipphauer.de/restful-api-design-best-practices/, http://gaboesquivel.com/blog/2015/best-practices-for-designing-web-apis/)
          * TODO: 3) Steps to implement ? Mongoose Schemas & Models, API routes & controllers, Front-End part
+         *
+         *
+         *
+         *
+         *
+         * TODO: ->>>>>   Turn root.express.ts to a class-based file and use it to create /API/express.api.ts
+         *
+         *
+         *
+         *
+         *
          */
         // TODO: create a way to generate automatically a skeleton CRUD for a given Model
+
+        // TODO: implement root.scss with _main.scss and @fontface with roboto
 
         // TODO: implement login feature with Passport and JWT
 
         // TODO: implement the AssimilatedFormsModule and find a way to put the correct type on Metadata classes
 
-        // TODO: replace the placeholders in the package.json & README file with user-provided infos
         // TODO: enable the user to choose the view engine in Express
     }
 
@@ -57,12 +70,14 @@ class LocutusWeb extends Generator {
      * Saving configurations and configure the project
      * (creating .editorconfig files and other metadata files)
      */
-    configuring() {}
+    configuring() {
+    }
 
     /**
      * If the method name doesn't match a priority, it will be pushed to this group
      */
-    default() {}
+    default() {
+    }
 
     /**
      * Where you write the generator specific files
@@ -88,21 +103,29 @@ class LocutusWeb extends Generator {
          */
         let filesToCopy = [
             {
-                name: "package.json",
+                name:         "package.json",
                 replacements: {
-                    useDB: this.config.get('useDB'),
+                    appName:  formatForPackageJSONName(this.config.get('appName')),
+                    useDB:  this.config.get('useDB'),
                     useJWT: this.config.get('useJWT')
                 }
             },
             {
-                name: "express.app.ts",
+                name:         "README.md",
                 replacements: {
-                    useDB: this.config.get('useDB'),
+                    appName:  this.config.get('appName')
+                }
+            },
+            {
+                name:         "express.app.ts",
+                replacements: {
+                    appName:  this.config.get('appName'),
+                    useDB:  this.config.get('useDB'),
                     dbName: this.config.get('dbName')
                 }
             },
             {
-                name: "Angular/RootModule/central-nexus.service.ts",
+                name:         "Angular/RootModule/central-nexus.service.ts",
                 replacements: {
                     useJWT: this.config.get('useJWT')
                 }
@@ -117,17 +140,20 @@ class LocutusWeb extends Generator {
      * Where conflicts about overwriting pre-existing files are handled
      * (used internally)
      */
-    conflicts() {}
+    conflicts() {
+    }
 
     /**
      * Where installations are run (npm, bower)
      */
-    install() {}
+    install() {
+    }
 
     /**
      * Called last, cleanup, say good bye, etc
      */
-    end() {}
+    end() {
+    }
 
     /**
      * Methods considered as private from the generator run loop's point of view.

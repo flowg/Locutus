@@ -1,12 +1,11 @@
 'use strict';
-
 /**
  * Third-party imports
  */
-import * as mongoose from 'mongoose';
-import { Schema, Document } from 'mongoose';
-import { UserDoc } from './User';
-import { PostDoc } from './Post';
+import * as mongoose from "mongoose";
+import { Schema, Document } from "mongoose";
+import { UserDoc } from "./User";
+import { PostDoc } from "./Post";
 
 /**
  * Schema
@@ -14,15 +13,15 @@ import { PostDoc } from './Post';
 // Schema options
 const options = {
     timestamps: true,
-    toJSON: { getters: true, virtuals: true },
-    toObject: { getters: true, virtuals: true },
+    toJSON:     { getters: true, virtuals: true },
+    toObject:   { getters: true, virtuals: true },
 };
 
 // Schema definition
 const BlogSchema = new Schema({
-    name: String,
-    creator: { type: Schema.Types.ObjectId, ref: 'User' },
-    intro:  String,
+    name:       String,
+    creator:    { type: Schema.Types.ObjectId, ref: 'User' },
+    intro:      String,
     visibility: { type: Boolean, default: true }
 }, options);
 
@@ -58,8 +57,8 @@ const BlogSchema = new Schema({
  *  });
  */
 BlogSchema.virtual('posts', {
-    ref: 'Post',
-    localField: '_id',
+    ref:          'Post',
+    localField:   '_id',
     foreignField: 'blog'
 });
 
@@ -71,7 +70,7 @@ BlogSchema.virtual('posts', {
 export interface BlogDoc extends Document {
     name: string;
     creator: UserDoc;
-    intro:  string;
+    intro: string;
     visibility: boolean;
     posts: PostDoc[];
 }

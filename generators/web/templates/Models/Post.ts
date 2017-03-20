@@ -1,12 +1,11 @@
 'use strict';
-
 /**
  * Third-party imports
  */
-import * as mongoose from 'mongoose';
-import { Schema, Document } from 'mongoose';
-import { BlogDoc } from './Blog';
-import { UserDoc } from './User';
+import * as mongoose from "mongoose";
+import { Schema, Document } from "mongoose";
+import { BlogDoc } from "./Blog";
+import { UserDoc } from "./User";
 
 /**
  * Schema
@@ -14,16 +13,16 @@ import { UserDoc } from './User';
 // Schema options
 const options = {
     timestamps: true,
-    toJSON: { getters: true, virtuals: true },
-    toObject: { getters: true, virtuals: true },
+    toJSON:     { getters: true, virtuals: true },
+    toObject:   { getters: true, virtuals: true },
 };
 
 // Schema definition
 const PostSchema = new Schema({
-    title: String,
-    author: { type: Schema.Types.ObjectId, ref: 'User' },
-    body: String,
-    blog: { type: Schema.Types.ObjectId, ref: 'Blog' },
+    title:      String,
+    author:     { type: Schema.Types.ObjectId, ref: 'User' },
+    body:       String,
+    blog:       { type: Schema.Types.ObjectId, ref: 'Blog' },
     visibility: { type: Boolean, default: true }
 }, options);
 

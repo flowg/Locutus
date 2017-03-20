@@ -4,7 +4,7 @@
  * Third-party requires
  */
 const Generator = require('yeoman-generator');
-const chalk = require('chalk');
+const chalk     = require('chalk');
 
 class Locutus extends Generator {
     /**
@@ -28,7 +28,8 @@ class Locutus extends Generator {
     /**
      * Your initialization methods (checking current project state, getting configs, etc)
      */
-    initializing() {}
+    initializing() {
+    }
 
     /**
      * Where you prompt users for options (where you'd call this.prompt())
@@ -37,52 +38,52 @@ class Locutus extends Generator {
         return this.prompt(
             [
                 {
-                    type    : 'input',
-                    name    : 'name',
-                    message : 'Your project name',
-                    default : this.appname // Default to current folder name
+                    type:    'input',
+                    name:    'appName',
+                    message: 'Your project name',
+                    default: this.appname // Default to current folder name
                 },
                 {
-                    type    : 'list',
-                    name    : 'appType',
-                    message : 'What kind of application would you like to create?',
+                    type:    'list',
+                    name:    'appType',
+                    message: 'What kind of application would you like to create?',
                     choices: [
                         {
-                            name: 'Web only',
+                            name:  'Web only',
                             value: 'web'
                         },
                         {
-                            name: 'Mobile only',
+                            name:  'Mobile only',
                             value: 'mobile'
                         }
                     ]
                 },
                 {
-                    type    : 'confirm',
-                    name    : 'useDB',
-                    message : 'Will your application use a database?',
-                    default : true
+                    type:    'confirm',
+                    name:    'useDB',
+                    message: 'Will your application use a database?',
+                    default: true
                 },
                 {
-                    type    : 'input',
-                    name    : 'dbName',
-                    message : 'Choose a name for the database',
-                    default : 'test',
-                    when    : answers => answers.useDB
+                    type:    'input',
+                    name:    'dbName',
+                    message: 'Choose a name for the database',
+                    default: 'test',
+                    when:    answers => answers.useDB
                 },
                 {
-                    type    : 'confirm',
-                    name    : 'useJWT',
-                    message : 'Will your application use JSON Web Tokens to handle authentication?',
-                    default : true
+                    type:    'confirm',
+                    name:    'useJWT',
+                    message: 'Will your application use JSON Web Tokens to handle authentication?',
+                    default: true
                 }
             ]
         ).then((answers) => {
             this.configuration = {
                 appName: answers.appName,
                 appType: answers.appType,
-                useDB: answers.useDB,
-                useJWT: answers.useJWT
+                useDB:   answers.useDB,
+                useJWT:  answers.useJWT
             };
 
             if (answers.useDB) {
@@ -112,20 +113,22 @@ class Locutus extends Generator {
      * Where you write the generator specific files
      * (see http://yeoman.io/authoring/file-system.html)
      */
-    writing() {}
+    writing() {
+    }
 
     /**
      * Where conflicts about overwriting pre-existing files are handled
      * (used internally)
      */
-    conflicts() {}
+    conflicts() {
+    }
 
     /**
      * Where installation are run (npm, bower)
      */
     install() {
         // Initializing the package.json file, common to all app types
-        this.spawnCommandSync('npm', ['init']);
+        this.spawnCommandSync('npm', [ 'init' ]);
 
         // Installing everything in the package.json file, common to all app types
         this.npmInstall();

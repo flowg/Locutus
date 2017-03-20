@@ -1,6 +1,13 @@
 'use strict';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './RootModule/app.module';
+/**
+ * Angular imports
+ */
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+/**
+ * App imports
+ */
+import { RootModule } from "./RootModule/root.module";
+
+platformBrowserDynamic().bootstrapModule(RootModule);

@@ -9,8 +9,8 @@
  * @private
  */
 const removeTemplatingMarkers = contents => {
-    let file = contents.toString();
-    let lines = file.split('\n');
+    let file          = contents.toString();
+    let lines         = file.split('\n');
     let linesToRemove = [];
 
     /*
@@ -22,7 +22,7 @@ const removeTemplatingMarkers = contents => {
         if (el.trim() === '//') {
             linesToRemove.push(i);
         } else if (el.includes('/**/')) {
-            array[i] = el.replace(/\/\*\*\//g, "");
+            array[ i ] = el.replace(/\/\*\*\//g, "");
         }
     });
 
@@ -47,7 +47,7 @@ const removeTemplatingMarkers = contents => {
  * @returns {void}
  * @private
  */
-const copyTemplatedFiles = function(filesToCopy) {
+const copyTemplatedFiles = function (filesToCopy) {
     for (let file of filesToCopy) {
         // First, render the templated files EJS-style
         this.fs.copyTpl(
@@ -72,6 +72,26 @@ const copyTemplatedFiles = function(filesToCopy) {
     }
 };
 
+/**
+ * Formats a string to be used as a value for the package.json's name field.
+ * See https://docs.npmjs.com/files/package.json#name
+ * @param name
+ * @returns {string|*}
+ */
+const formatForPackageJSONName = name => {
+    if (name[0] === '.' || name[0] === '_') {
+        name = name.substr(1);
+    }
+
+    name = name
+        .toLowerCase()
+        .substr(0, 214)
+        .replace(/ /g, '-');
+
+    return name;
+};
+
 module.exports = {
-    copyTemplatedFiles: copyTemplatedFiles
+    copyTemplatedFiles: copyTemplatedFiles,
+    formatForPackageJSONName: formatForPackageJSONName
 };

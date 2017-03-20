@@ -1,4 +1,4 @@
-# Locutus Generated app ( replace with app name )
+# <%= appName %>
 
 ## Locutus Workflow
 

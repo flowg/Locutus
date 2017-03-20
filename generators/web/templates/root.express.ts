@@ -1,40 +1,36 @@
 'use strict';
 
 /**
- * Third-party imports ( https://www.npmjs.com/~types )
+ * Express imports
  */
-import * as express from 'express';
+import * as express from "express";
 import Request = express.Request;
 import Response = express.Response;
 import NextFunction = express.NextFunction;
-import * as path from 'path';
-import * as debugRaw from 'debug';
-import * as logger from 'morgan';
-import * as cookieParser from 'cookie-parser';
-import * as bodyParser from 'body-parser';
-/*<% if (useDB) { %>*/import * as mongoose from 'mongoose';
-require('mongoose').Promise = global.Promise;/*<% } %>*/
+import Application = express.Application;
 
 /**
- * Third-party requires
+ * Third-party imports ( https://www.npmjs.com/~types )
  */
-/*const favicon = require('serve-favicon');*/
-/*const session = require('express-session');
- const MongoDBStore = require('connect-mongodb-session')(session);
- const flash = require('connect-flash');
- const passport = require('passport');*/
+import * as path from "path";
+import * as debug from "debug";
+import * as logger from "morgan";
+import * as cookieParser from "cookie-parser";
+import * as bodyParser from "body-parser";
+/*<% if (useDB) { %>*/
+import * as mongoose from "mongoose";
+require('mongoose').Promise = global.Promise;
+import "./Models/Blog";
+import { BlogDoc } from "./Models/Blog";
+import "./Models/Post";
+import { PostDoc } from "./Models/Post";
+import "./Models/User";
+import { UserDoc } from "./Models/User";
+/*<% } %>*/
 
 /**
- * App requires
+ * App imports
  */
-/*<% if (useDB) { %>*/// Registering schemas for all models in global mongoose instance
-import './Models/Blog';
-import { BlogDoc } from './Models/Blog';
-import './Models/Post';
-import { PostDoc } from './Models/Post';
-import './Models/User';
-import { UserDoc } from './Models/User';/*<% } %>*/
-
 /*/ Getting Passport configuration
  require('./Config/passport');*/
 
@@ -46,23 +42,15 @@ import { UserDoc } from './Models/User';/*<% } %>*/
 /**
  * App setup
  */
-const app = express();
-const debug = debugRaw('core');
 
-// If specified in CLI, set environment mode
-let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
-if (env) {
-    env = env.split('=').pop();
-    app.set('env', env);
-}
 
-// View engine setup
-let viewsFolder = (app.get('env') === 'development') ? 'Angular' : 'Angular/aot';
-app.set('views', path.join(__dirname, viewsFolder));
-app.set('view engine', 'ejs');
+
+
+
+
 
 /*<% if (useDB) { %>*/// Dealing with Database
-const dbName = 'test';
+const dbName   = '<%= dbName %>';
 const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
 mongoose.connect(mongoURL);
 
@@ -73,33 +61,34 @@ mongoose.connection.once('open', () => {
 
     let userDoc = new User({
         firstName: 'Tata',
-        lastName: 'Toto'
+        lastName:  'Toto'
     });
     let blogDoc = new Blog({
-        name: 'My Blog',
+        name:    'My Blog',
         creator: userDoc._id
     });
     let postDoc = new Post({
         author: userDoc._id,
-        blog: blogDoc._id
+        blog:   blogDoc._id
     });
 
     userDoc.save((err: Error, user: UserDoc) => {
-        debug(user);
+        debugCore(user);
     });
 
     blogDoc.save((err: Error, blog: BlogDoc) => {
-        debug(blog);
+        debugCore(blog);
     });
 
     postDoc.save((err: Error, post: PostDoc) => {
-        debug(post);
+        debugCore(post);
 
         Blog.find({}).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
-            debug(blogs);
+            debugCore(blogs);
         });
     });
-});/*<% } %>*/
+});
+/*<% } %>*/
 
 /*const store = new MongoDBStore(
  {
@@ -119,7 +108,7 @@ mongoose.connection.once('open', () => {
 app.use(logger('dev'));
 // This app only parses automatically application/json & application/x-www-form-urlencoded bodies
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 /*app.use(session({
@@ -146,6 +135,9 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 /**
  * App routing
  */
+// Mounting the sup-app dedicated to serving the API
+//app.use('/api', api);
+
 // Delegating routing to Angular router for non API routes
 app.get('/*', (req: Request, res: Response, next: NextFunction) => {
     res.render('index');
@@ -158,7 +150,7 @@ app.get('/*', (req: Request, res: Response, next: NextFunction) => {
 // If you get here, no route has matched : catch 404 and forward to error handlers
 app.use((req: Request, res: Response, next: NextFunction) => {
     let err: any = new Error('Not Found');
-    err.status = 404;
+    err.status   = 404;
     next(err);
 });
 
@@ -173,7 +165,7 @@ if (app.get('env') === 'development') {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: err
+            error:   err
         });
     });
 }
@@ -183,8 +175,55 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
-        error: {}
+        error:   {}
     });
 });
+
+class RootExpress {
+    private app: Application;
+    private debug: debug.IDebugger;
+
+    constructor() {
+        this.app = express();
+        this.debug = debug('root');
+
+        this.init();
+    }
+
+    private init() {
+        this.configureEnv();
+        this.configureLocals();
+        this.configureViewEngine();
+    }
+
+    /**
+     * If specified in CLI, set environment mode
+     */
+    private configureEnv() {
+        let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
+        if (env) {
+            env = env.split('=').pop();
+            this.app.set('env', env);
+        }
+    }
+
+    /**
+     * Setting local variables persisting during the whole app lifetime
+     */
+    private configureLocals() {
+        this.app.locals.title = '<%= appName %>';
+    }
+
+    /**
+     * Telling where to look for Views and
+     * which engine to use for .html files
+     */
+    private configureViewEngine() {
+        let viewsFolder = (this.app.get('env') === 'development') ? 'Angular' : 'Angular/aot';
+        this.app.set('views', path.join(__dirname, viewsFolder));
+        this.app.set('view engine', 'html');
+        this.app.engine('html', require('ejs').renderFile);
+    }
+}
 
 module.exports = app;

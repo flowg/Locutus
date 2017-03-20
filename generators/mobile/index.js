@@ -28,40 +28,47 @@ class LocutusMobile extends Generator {
     /**
      * Where you prompt users for options (where you'd call this.prompt())
      */
-    prompting() {}
+    prompting() {
+    }
 
     /**
      * Saving configurations and configure the project
      * (creating .editorconfig files and other metadata files)
      */
-    configuring() {}
+    configuring() {
+    }
 
     /**
      * If the method name doesn't match a priority, it will be pushed to this group
      */
-    default() {}
+    default() {
+    }
 
     /**
      * Where you write the generator specific files
      * (see http://yeoman.io/authoring/file-system.html)
      */
-    writing() {}
+    writing() {
+    }
 
     /**
      * Where conflicts about overwriting pre-existing files are handled
      * (used internally)
      */
-    conflicts() {}
+    conflicts() {
+    }
 
     /**
      * Where installations are run (npm, bower)
      */
-    install() {}
+    install() {
+    }
 
     /**
      * Called last, cleanup, say good bye, etc
      */
-    end() {}
+    end() {
+    }
 
     /**
      * Methods considered as private from the generator run loop's point of view.

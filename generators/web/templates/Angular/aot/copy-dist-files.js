@@ -9,9 +9,9 @@ let resources = [
     'node_modules/zone.js/dist/zone.min.js',
     'Angular/styles.css'
 ];
-resources.map(function(f) {
+resources.map(function (f) {
     let path = f.split('/');
-    let t = 'Angular/aot/' + path[path.length-1];
+    let t    = 'Angular/aot/' + path[ path.length - 1 ];
     fs.createReadStream(f).pipe(fs.createWriteStream(t));
 });
 

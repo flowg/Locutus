@@ -1,10 +1,9 @@
 'use strict';
-
 /**
  * Third-party imports
  */
-import * as mongoose from 'mongoose';
-import { Schema, Document } from 'mongoose';
+import * as mongoose from "mongoose";
+import { Schema, Document } from "mongoose";
 
 /**
  * Schema
@@ -12,16 +11,16 @@ import { Schema, Document } from 'mongoose';
 // Schema options
 const options = {
     timestamps: true,
-    toJSON: { getters: true, virtuals: true },
-    toObject: { getters: true, virtuals: true },
+    toJSON:     { getters: true, virtuals: true },
+    toObject:   { getters: true, virtuals: true },
 };
 
 // Schema definition
 const UserSchema = new Schema({
     firstName: String,
-    lastName: String,
-    email: String,
-    role: String
+    lastName:  String,
+    email:     String,
+    role:      String
 }, options);
 
 /*
@@ -55,7 +54,7 @@ const UserSchema = new Schema({
  *      foreignField: 'schema2Field'    // is equal to `schema2Field` ( in schema2 )
  *  });
  */
-UserSchema.virtual('name').get(function() {
+UserSchema.virtual('name').get(function () {
     return this.firstName + ' ' + this.lastName;
 });
 

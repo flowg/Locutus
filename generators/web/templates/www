@@ -4,9 +4,9 @@
 /**
  * Module dependencies
  */
-let app = require('./express.app');
+let app   = require('./root.express.ts');
 let debug = require('debug')('www');
-let http = require('http');
+let http  = require('http');
 
 /**
  * Normalize a port into a number, string, or false
@@ -69,7 +69,7 @@ let onListening = () => {
  * Get port from environment and store it in Express
  */
 let defaultPort = (app.get("env") === "development") ? 4200 : 4242;
-let port = normalizePort(process.env.PORT || defaultPort);
+let port        = normalizePort(process.env.PORT || defaultPort);
 app.set('port', port);
 
 /**
