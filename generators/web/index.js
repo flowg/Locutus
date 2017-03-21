@@ -55,6 +55,13 @@ class LocutusWeb extends Generator {
          *
          *
          */
+
+        // TODO: work on morgan to log things
+
+        // TODO: work on the favicon problem
+
+        // TODO: try to understand body-parser and cookie-parser
+
         // TODO: create a way to generate automatically a skeleton CRUD for a given Model
 
         // TODO: implement root.scss with _main.scss and @fontface with roboto
