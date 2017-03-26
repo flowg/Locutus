@@ -32,7 +32,6 @@ class LocutusWeb extends Generator {
      */
     prompting() {
         // TODO: use the www and app.js from DTEC-Website and adapt them ( done when no more code commented )
-        // TODO: try to go to Typescript for Back-End too
 
         // TODO: read https://angular.io/docs/ts/latest/guide/reactive-forms.html
 
@@ -57,10 +56,6 @@ class LocutusWeb extends Generator {
          */
 
         // TODO: work on morgan to log things
-
-        // TODO: work on the favicon problem
-
-        // TODO: try to understand body-parser and cookie-parser
 
         // TODO: create a way to generate automatically a skeleton CRUD for a given Model
 
@@ -124,7 +119,7 @@ class LocutusWeb extends Generator {
                 }
             },
             {
-                name:         "express.app.ts",
+                name:         "root.express.ts",
                 replacements: {
                     appName:  this.config.get('appName'),
                     useDB:  this.config.get('useDB'),
@@ -133,6 +128,12 @@ class LocutusWeb extends Generator {
             },
             {
                 name:         "Angular/RootModule/central-nexus.service.ts",
+                replacements: {
+                    useJWT: this.config.get('useJWT')
+                }
+            },
+            {
+                name:         "Angular/RootModule/root.module.ts",
                 replacements: {
                     useJWT: this.config.get('useJWT')
                 }

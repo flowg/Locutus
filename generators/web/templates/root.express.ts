@@ -15,9 +15,8 @@ import Application = express.Application;
 import * as path from "path";
 import * as debug from "debug";
 import * as logger from "morgan";
-import * as cookieParser from "cookie-parser";
-import * as bodyParser from "body-parser";
-/*<% if (useDB) { %>*/
+import * as favicon from "serve-favicon";
+//<% if (useDB) { %>
 import * as mongoose from "mongoose";
 require('mongoose').Promise = global.Promise;
 import "./Models/Blog";
@@ -26,74 +25,30 @@ import "./Models/Post";
 import { PostDoc } from "./Models/Post";
 import "./Models/User";
 import { UserDoc } from "./Models/User";
-/*<% } %>*/
+//<% } %>
 
 /**
  * App imports
  */
 /*/ Getting Passport configuration
  require('./Config/passport');*/
-
-/*// Getting routes configuration
- const frontRoutes = require('./Routing/front');
- const privateRoutes = require('./Routing/Back/Private/private');
- const userRoutes = require('./Routing/Back/user').router;*/
+import { apiExpressApp } from './API/api.express';
 
 /**
- * App routing
+ * Configuring main Express app via this class:
+ * the order of the app setup sequence, as well as
+ * the order of the app.use() calls, are VERY IMPORTANT
  */
-// Mounting the sup-app dedicated to serving the API
-//app.use('/api', api);
-
-// Delegating routing to Angular router for non API routes
-app.get('/*', (req: Request, res: Response, next: NextFunction) => {
-    res.render('index');
-});
-
-/*app.use('/back', userRoutes);
- app.use('/back', privateRoutes);
- app.use('/', frontRoutes);*/
-
-// If you get here, no route has matched : catch 404 and forward to error handlers
-app.use((req: Request, res: Response, next: NextFunction) => {
-    let err: any = new Error('Not Found');
-    err.status   = 404;
-    next(err);
-});
-
-/**
- * Error handlers
- */
-// Development error handler : will print stacktrace
-if (app.get('env') === 'development') {
-    app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-        console.log(err);
-        console.log(req.headers);
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error:   err
-        });
-    });
-}
-
-// Production error handler : no stacktraces leaked to user
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error:   {}
-    });
-});
-
 class RootExpress {
-    private app: Application;
+    app: Application;
     private debug: debug.IDebugger;
+    private debugErrors: debug.IDebugger;
     private viewsFolder: string;
 
     constructor() {
         this.app = express();
         this.debug = debug('root');
+        this.debugErrors = debug('ROOT-ERROR');
 
         this.init();
     }
@@ -105,8 +60,12 @@ class RootExpress {
         this.configureEnv();
         this.configureLocals();
         this.configureViewEngine();
+        /*<% if (useDB) { %>*/
         this.configureDB();
-        this.configureAppMiddleware();
+        /*<% } %>*/
+        this.configureMiddleware();
+        this.configureRouting();
+        this.configureErrorHandler();
     }
 
     /**
@@ -198,18 +157,12 @@ class RootExpress {
     /**
      * Configuring app-level Middleware
      */
-    private configureAppMiddleware() {
-        // Setting logging facility
+    private configureMiddleware() {
+        // Instructs Express to serve your favicon
+        this.app.use(favicon(path.join(__dirname, 'Assets/Images', 'favicon.ico')));
+
+        // Setting logging middleware
         this.app.use(logger('dev'));
-
-        // Uncomment after placing your favicon in /Public
-        /*app.use(favicon(path.join(__dirname, 'Public', 'favicon.ico')));*/
-
-        // This app only parses automatically application/json & application/x-www-form-urlencoded bodies
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
-
-        this.app.use(cookieParser());
 
         /*app.use(session({
          cookie: {
@@ -232,6 +185,54 @@ class RootExpress {
         this.app.use(express.static(path.join(__dirname, 'Public')));
         this.app.use(express.static(path.join(__dirname, 'node_modules')));
     }
+
+    /**
+     * Configuring app routing
+     */
+    private configureRouting() {
+        // Mounting the sup-app dedicated to serving the API
+        this.app.use('/api', apiExpressApp);
+
+        // Delegating routing to Angular router for non API routes
+        this.app.get('/*', (req: Request, res: Response, next: NextFunction) => {
+            res.render('index');
+        });
+
+        // If you get here, no route has matched : catch 404 and forward to error handlers
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            let err: any = new Error('Not Found');
+            err.status   = 404;
+            next(err);
+        });
+    }
+
+    /**
+     * Configuring error handler
+     */
+    private configureErrorHandler() {
+        const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+            let errorToDisplay: any = {};
+
+            if (this.app.get('env') === 'development') {
+                this.debugErrors(err);
+                this.debugErrors(req.headers);
+                errorToDisplay = err;
+            }
+
+            res.status(err.status || 500);
+            res.render('error', {
+                message: err.message,
+                error:   errorToDisplay
+            });
+        };
+
+        this.app.use(errorHandler);
+    }
 }
 
-module.exports = app;
+/**
+ * Creating the app via instantiation
+ * and exporting it
+ */
+const rootExpress: RootExpress = new RootExpress();
+export const rootExpressApp: Application = rootExpress.app;

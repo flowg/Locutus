@@ -25,7 +25,7 @@ export class RootComponent {
     getBlogs() {
         this.blogsService.getBlogs()
             .subscribe(
-                data => console.log(data)
+                (data: any) => console.log(data)
             );
     }
 }

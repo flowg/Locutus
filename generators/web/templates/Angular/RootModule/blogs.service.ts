@@ -16,6 +16,6 @@ export class BlogsService {
     }
 
     getBlogs() {
-        return this.nexus.sendGetRequest('blogs', data => data, false);
+        return this.nexus.sendGetRequest('blogs', (data: any) => data/*<% if (useJWT) { %>*/, false/*<% } %>*/);
     }
 }
