@@ -137,6 +137,12 @@ class LocutusWeb extends Generator {
                 replacements: {
                     useJWT: this.config.get('useJWT')
                 }
+            },
+            {
+                name:         "Angular/RootModule/blogs.service.ts",
+                replacements: {
+                    useJWT: this.config.get('useJWT')
+                }
             }
         ];
 
