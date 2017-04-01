@@ -4,10 +4,12 @@
  * Express imports
  */
 import * as express from "express";
-import Request = express.Request;
-import Response = express.Response;
-import NextFunction = express.NextFunction;
-import Application = express.Application;
+import {
+    Application,
+    Request,
+    Response,
+    NextFunction
+} from "express-serve-static-core";
 
 /**
  * Third-party imports ( https://www.npmjs.com/~types )
@@ -19,16 +21,18 @@ import * as bodyParser from "body-parser";
 /**
  * App imports
  */
+import { blogsRouter } from "./blogs.endpoint";
+import { SubApp } from "../Locutus/app.interface";
 
 /**
  * Configuring Express sub-app in charge with the API, via this class:
  * the order of the app setup sequence, as well as
  * the order of the app.use() calls, are VERY IMPORTANT
  */
-class ApiExpress {
+class ApiExpress implements SubApp {
     app: Application;
-    private debug: debug.IDebugger;
-    private debugErrors: debug.IDebugger;
+    debug: debug.IDebugger;
+    debugErrors: debug.IDebugger;
 
     constructor() {
         this.app         = express();
@@ -41,7 +45,7 @@ class ApiExpress {
     /**
      * Sub-app setup sequence
      */
-    private init() {
+    init() {
         this.configureEnv();
         this.configureLocals();
         this.configureMiddleware();
@@ -54,7 +58,7 @@ class ApiExpress {
      * WARNING: must be set also in a sub-app
      * since the env setting won't be inherited
      */
-    private configureEnv() {
+    configureEnv() {
         let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
         if (env) {
             env = env.split('=').pop();
@@ -66,13 +70,13 @@ class ApiExpress {
      * Setting local variables persisting during the whole app lifetime
      * WARNING: these are not inherited by a sub-app
      */
-    private configureLocals() {
+    configureLocals() {
     }
 
     /**
      * Configuring sub-app-level Middleware
      */
-    private configureMiddleware() {
+    configureMiddleware() {
         // This app now parses automatically only application/json bodies, available at req.body
         this.app.use(bodyParser.json());
 
@@ -83,7 +87,10 @@ class ApiExpress {
     /**
      * Configuring sub-app routing for the API
      */
-    private configureRouting() {
+    configureRouting() {
+        // Mounting all endpoints
+        this.app.use(blogsRouter);
+
         // If you get here, no route has matched : it may be a bad URL or bad method
         // TODO: adapt this to API global errors
         this.app.use((req: Request, res: Response, next: NextFunction) => {
@@ -96,7 +103,7 @@ class ApiExpress {
     /**
      * Configuring error handler
      */
-    private configureErrorHandler() {
+    configureErrorHandler() {
         const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
             let errorToDisplay: any = {};
 

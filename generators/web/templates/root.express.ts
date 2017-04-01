@@ -4,10 +4,12 @@
  * Express imports
  */
 import * as express from "express";
-import Request = express.Request;
-import Response = express.Response;
-import NextFunction = express.NextFunction;
-import Application = express.Application;
+import {
+    Application,
+    Request,
+    Response,
+    NextFunction
+} from "express-serve-static-core";
 
 /**
  * Third-party imports ( https://www.npmjs.com/~types )
@@ -19,6 +21,16 @@ import * as favicon from "serve-favicon";
 //<% if (useDB) { %>
 import * as mongoose from "mongoose";
 require('mongoose').Promise = global.Promise;
+//<% } %>
+
+/**
+ * App imports
+ */
+/*/ Getting Passport configuration
+ require('./Config/passport');*/
+import { App } from "./Locutus/app.interface";
+import { apiExpressApp } from './API/api.express';
+//<% if (useDB) { %>
 import "./Models/Blog";
 import { BlogDoc } from "./Models/Blog";
 import "./Models/Post";
@@ -28,22 +40,15 @@ import { UserDoc } from "./Models/User";
 //<% } %>
 
 /**
- * App imports
- */
-/*/ Getting Passport configuration
- require('./Config/passport');*/
-import { apiExpressApp } from './API/api.express';
-
-/**
  * Configuring main Express app via this class:
  * the order of the app setup sequence, as well as
  * the order of the app.use() calls, are VERY IMPORTANT
  */
-class RootExpress {
+class RootExpress implements App {
     app: Application;
-    private debug: debug.IDebugger;
-    private debugErrors: debug.IDebugger;
-    private viewsFolder: string;
+    debug: debug.IDebugger;
+    debugErrors: debug.IDebugger;
+    viewsFolder: string;
 
     constructor() {
         this.app = express();
@@ -56,7 +61,7 @@ class RootExpress {
     /**
      * App setup sequence
      */
-    private init() {
+    init() {
         this.configureEnv();
         this.configureLocals();
         this.configureViewEngine();
@@ -73,7 +78,7 @@ class RootExpress {
      * WARNING: must be set also in a sub-app
      * since the env setting won't be inherited
      */
-    private configureEnv() {
+    configureEnv() {
         let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
         if (env) {
             env = env.split('=').pop();
@@ -85,7 +90,7 @@ class RootExpress {
      * Setting local variables persisting during the whole app lifetime
      * WARNING: these are not inherited by a sub-app
      */
-    private configureLocals() {
+    configureLocals() {
         this.app.locals.title = '<%= appName %>';
     }
 
@@ -93,7 +98,7 @@ class RootExpress {
      * Telling where to look for Views and
      * which engine to use for .html files
      */
-    private configureViewEngine() {
+    configureViewEngine() {
         this.viewsFolder = (this.app.get('env') === 'development') ? 'Angular' : 'Angular/aot';
         this.app.set('views', path.join(__dirname, this.viewsFolder));
         this.app.set('view engine', 'html');
@@ -104,7 +109,7 @@ class RootExpress {
     /**
      * Connect to database
      */
-    private configureDB() {
+    configureDB() {
         // Dealing with Database
         const dbName   = '<%= dbName %>';
         const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
@@ -160,7 +165,7 @@ class RootExpress {
     /**
      * Configuring app-level Middleware
      */
-    private configureMiddleware() {
+    configureMiddleware() {
         // Instructs Express to serve your favicon
         this.app.use(favicon(path.join(__dirname, 'Assets/Images', 'favicon.ico')));
 
@@ -192,7 +197,7 @@ class RootExpress {
     /**
      * Configuring app routing
      */
-    private configureRouting() {
+    configureRouting() {
         // Mounting the sup-app dedicated to serving the API
         this.app.use('/api', apiExpressApp);
 
@@ -212,7 +217,7 @@ class RootExpress {
     /**
      * Configuring error handler
      */
-    private configureErrorHandler() {
+    configureErrorHandler() {
         const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
             let errorToDisplay: any = {};
 
