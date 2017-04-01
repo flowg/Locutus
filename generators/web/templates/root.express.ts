@@ -60,9 +60,9 @@ class RootExpress {
         this.configureEnv();
         this.configureLocals();
         this.configureViewEngine();
-        /*<% if (useDB) { %>*/
+        //<% if (useDB) { %>
         this.configureDB();
-        /*<% } %>*/
+        //<% } %>
         this.configureMiddleware();
         this.configureRouting();
         this.configureErrorHandler();
@@ -70,6 +70,8 @@ class RootExpress {
 
     /**
      * If specified in CLI, set environment mode
+     * WARNING: must be set also in a sub-app
+     * since the env setting won't be inherited
      */
     private configureEnv() {
         let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
@@ -81,6 +83,7 @@ class RootExpress {
 
     /**
      * Setting local variables persisting during the whole app lifetime
+     * WARNING: these are not inherited by a sub-app
      */
     private configureLocals() {
         this.app.locals.title = '<%= appName %>';
@@ -97,7 +100,7 @@ class RootExpress {
         this.app.engine('html', require('ejs').renderFile);
     }
 
-    /*<% if (useDB) { %>*/
+    //<% if (useDB) { %>
     /**
      * Connect to database
      */
@@ -152,7 +155,7 @@ class RootExpress {
          // Also get an error here
          });*/
     }
-    /*<% } %>*/
+    //<% } %>
 
     /**
      * Configuring app-level Middleware

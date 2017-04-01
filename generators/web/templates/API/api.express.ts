@@ -20,7 +20,6 @@ import * as bodyParser from "body-parser";
  * App imports
  */
 
-
 /**
  * Configuring Express sub-app in charge with the API, via this class:
  * the order of the app setup sequence, as well as
@@ -32,8 +31,8 @@ class ApiExpress {
     private debugErrors: debug.IDebugger;
 
     constructor() {
-        this.app = express();
-        this.debug = debug('api');
+        this.app         = express();
+        this.debug       = debug('api');
         this.debugErrors = debug('API-ERROR');
 
         this.init();
@@ -52,6 +51,8 @@ class ApiExpress {
 
     /**
      * If specified in CLI, set environment mode
+     * WARNING: must be set also in a sub-app
+     * since the env setting won't be inherited
      */
     private configureEnv() {
         let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
@@ -63,9 +64,9 @@ class ApiExpress {
 
     /**
      * Setting local variables persisting during the whole app lifetime
+     * WARNING: these are not inherited by a sub-app
      */
     private configureLocals() {
-        this.app.locals.title = '<%= appName %>';
     }
 
     /**
@@ -120,5 +121,5 @@ class ApiExpress {
  * Creating the sub-app via instantiation
  * and exporting it
  */
-const apiExpress: ApiExpress = new ApiExpress();
+const apiExpress: ApiExpress            = new ApiExpress();
 export const apiExpressApp: Application = apiExpress.app;

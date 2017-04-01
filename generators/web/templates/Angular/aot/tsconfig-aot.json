@@ -17,7 +17,7 @@
     ]
   },
   "files": [
-    "RootModule/app.module.ts",
+    "RootModule/root.module.ts",
     "main-aot.ts"
   ],
   "angularCompilerOptions": {

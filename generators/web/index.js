@@ -47,13 +47,15 @@ class LocutusWeb extends Generator {
          *
          *
          *
-         * TODO: ->>>>>   Turn root.express.ts to a class-based file and use it to create /API/express.api.ts
+         * TODO: ->>>>>   Create a /blogs endpoint to test READ and use it to finish the api.express.ts file ( error handlers left only )
          *
          *
          *
          *
          *
          */
+
+        // TODO: work again on AOT
 
         // TODO: work on morgan to log things
 
