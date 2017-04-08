@@ -40,10 +40,14 @@
     "express": "~4.14.1",
     "ejs": "^2.5.5",
     //<% if (useDB) { %>
+    //<% if (dbType === 'mongo') { %>
     "mongoose": "^4.8.3",
     //<% } %>
-    //<% if (useJWT) { %>
+    //<% } %>
+    //<% if (userSystem) { %>
+    //<% if (userSystemType === 'JWT') { %>
     "angular2-jwt": "^0.1.28",
+    //<% } %>
     //<% } %>
     "morgan": "~1.7.0",
     "rxjs": "5.0.1",

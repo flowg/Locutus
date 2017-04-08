@@ -1,7 +1,7 @@
 'use strict';
 
-let Generator          = require('yeoman-generator');
-let copyTemplatedFiles = require('../app/common-helpers').copyTemplatedFiles;
+let Generator                = require('yeoman-generator');
+let copyTemplatedFiles       = require('../app/common-helpers').copyTemplatedFiles;
 let formatForPackageJSONName = require('../app/common-helpers').formatForPackageJSONName;
 
 class LocutusWeb extends Generator {
@@ -47,7 +47,8 @@ class LocutusWeb extends Generator {
          *
          *
          *
-         * TODO: ->>>>>   Create a /blogs endpoint to test READ and use it to finish the api.express.ts file ( error handlers left only )
+         * TODO: ->>>>>   Create a /blogs endpoint to create a complete CRUD
+         * TODO: use it to finish the api.express.ts file ( error handlers left only )
          *
          *
          *
@@ -109,41 +110,47 @@ class LocutusWeb extends Generator {
             {
                 name:         "package.json",
                 replacements: {
-                    appName:  formatForPackageJSONName(this.config.get('appName')),
-                    useDB:  this.config.get('useDB'),
-                    useJWT: this.config.get('useJWT')
+                    appName:        formatForPackageJSONName(this.config.get('appName')),
+                    useDB:          this.config.get('useDB'),
+                    dbType:         this.config.get('dbType'),
+                    userSystem:     this.config.get('userSystem'),
+                    userSystemType: this.config.get('userSystemType')
                 }
             },
             {
                 name:         "README.md",
                 replacements: {
-                    appName:  this.config.get('appName')
+                    appName: this.config.get('appName')
                 }
             },
             {
                 name:         "root.express.ts",
                 replacements: {
-                    appName:  this.config.get('appName'),
-                    useDB:  this.config.get('useDB'),
-                    dbName: this.config.get('dbName')
+                    appName: this.config.get('appName'),
+                    useDB:   this.config.get('useDB'),
+                    dbType:  this.config.get('dbType'),
+                    dbName:  this.config.get('dbName')
                 }
             },
             {
                 name:         "Angular/RootModule/central-nexus.service.ts",
                 replacements: {
-                    useJWT: this.config.get('useJWT')
+                    userSystem:     this.config.get('userSystem'),
+                    userSystemType: this.config.get('userSystemType')
                 }
             },
             {
                 name:         "Angular/RootModule/root.module.ts",
                 replacements: {
-                    useJWT: this.config.get('useJWT')
+                    userSystem:     this.config.get('userSystem'),
+                    userSystemType: this.config.get('userSystemType')
                 }
             },
             {
                 name:         "Angular/RootModule/blogs.service.ts",
                 replacements: {
-                    useJWT: this.config.get('useJWT')
+                    userSystem:     this.config.get('userSystem'),
+                    userSystemType: this.config.get('userSystemType')
                 }
             }
         ];

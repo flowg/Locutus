@@ -431,6 +431,9 @@ _temp
 # /bin files
 !bin
 
+# Local DB for development & debugging
+/db/
+
 # /Angular files
 Angular/**/*.js
 !/Angular/aot/copy-dist-files.js

@@ -19,8 +19,10 @@ import * as debug from "debug";
 import * as logger from "morgan";
 import * as favicon from "serve-favicon";
 //<% if (useDB) { %>
+//<% if (dbType === 'mongo') { %>
 import * as mongoose from "mongoose";
 require('mongoose').Promise = global.Promise;
+//<% } %>
 //<% } %>
 
 /**
@@ -31,12 +33,14 @@ require('mongoose').Promise = global.Promise;
 import { App } from "./Locutus/app.interface";
 import { apiExpressApp } from './API/api.express';
 //<% if (useDB) { %>
+//<% if (dbType === 'mongo') { %>
 import "./Models/Blog";
 import { BlogDoc } from "./Models/Blog";
 import "./Models/Post";
 import { PostDoc } from "./Models/Post";
 import "./Models/User";
 import { UserDoc } from "./Models/User";
+//<% } %>
 //<% } %>
 
 /**
@@ -107,11 +111,12 @@ class RootExpress implements App {
 
     //<% if (useDB) { %>
     /**
-     * Connect to database
+     * Connecting to database
      */
     configureDB() {
         // Dealing with Database
         const dbName   = '<%= dbName %>';
+        //<% if (dbType === 'mongo') { %>
         const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
         mongoose.connect(mongoURL);
 
@@ -159,6 +164,7 @@ class RootExpress implements App {
          store.on('error', function (error) {
          // Also get an error here
          });*/
+        //<% } %>
     }
     //<% } %>
 

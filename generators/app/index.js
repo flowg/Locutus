@@ -61,8 +61,20 @@ class Locutus extends Generator {
                 {
                     type:    'confirm',
                     name:    'useDB',
-                    message: 'Will your application use a database?',
+                    message: 'Will your application need a database?',
                     default: true
+                },
+                {
+                    type:    'list',
+                    name:    'dbType',
+                    message: 'Among the ones currently supported by Locutus, which DB technology do you want to use?',
+                    choices: [
+                        {
+                            name:  'MongoDB',
+                            value: 'mongo'
+                        }
+                    ],
+                    when:    answers => answers.useDB
                 },
                 {
                     type:    'input',
@@ -73,22 +85,40 @@ class Locutus extends Generator {
                 },
                 {
                     type:    'confirm',
-                    name:    'useJWT',
-                    message: 'Will your application use JSON Web Tokens to handle authentication?',
+                    name:    'useForms',
+                    message: 'Will your application need to implement forms?',
                     default: true
-                }
+                },
+                {
+                    type:    'confirm',
+                    name:    'userSystem',
+                    message: 'Will your application need to handle user authentication/authorization?',
+                    default: true
+                },
+                {
+                    type:    'list',
+                    name:    'userSystemType',
+                    message: 'Among the ones currently supported by Locutus, which user system type do you want to use?',
+                    choices: [
+                        {
+                            name:  'JSON Web Tokens',
+                            value: 'JWT'
+                        }
+                    ],
+                    when:    answers => answers.userSystem
+                },
             ]
         ).then((answers) => {
             this.configuration = {
-                appName: answers.appName,
-                appType: answers.appType,
-                useDB:   answers.useDB,
-                useJWT:  answers.useJWT
+                appName:        answers.appName,
+                appType:        answers.appType,
+                useDB:          answers.useDB,
+                dbType:         answers.dbType,
+                dbName:         answers.dbName,
+                useForms:       answers.useForms,
+                userSystem:     answers.userSystem,
+                userSystemType: answers.userSystemType
             };
-
-            if (answers.useDB) {
-                this.configuration.dbName = answers.dbName;
-            }
         });
     }
 
@@ -141,7 +171,15 @@ class Locutus extends Generator {
         this.log('Assimilation complete');
 
         if (this.configuration.useDB) {
-            this.log(chalk.red("\nDon't forget to install MongoDB and run a mongod server before using 'npm start'\n"));
+            switch (this.configuration.dbType) {
+                case 'mongo':
+                    this.log(chalk.red("\nDon't forget to install MongoDB:"));
+                    this.log(chalk.cyan("https://www.mongodb.com/download-center#community"));
+                    this.log(chalk.red("\nThen, at the root of your project, create a local folder to host your DB and run a mongod server BEFORE using 'npm start'."));
+                    this.log(chalk.red("Simply go to the root of your project in your Terminal ( same level as package.json ) and type:"));
+                    this.log(chalk.green("\n\t\tmkdir db && mongod --dbpath db\n"));
+                    break;
+            }
         }
     }
 

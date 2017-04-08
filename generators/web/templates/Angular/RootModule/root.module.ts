@@ -10,8 +10,10 @@ import { HttpModule } from '@angular/http';
 /**
  * Third-party imports
  */
-//<% if (useJWT) { %>
+//<% if (userSystem) { %>
+//<% if (userSystemType === 'JWT') { %>
 import { AUTH_PROVIDERS } from 'angular2-jwt';
+//<% } %>
 //<% } %>
 
 /**
@@ -26,8 +28,10 @@ import { CentralNexusService } from "./central-nexus.service";
     declarations: [ RootComponent ],
     bootstrap:    [ RootComponent ],
     providers:    [
-        //<% if (useJWT) { %>
+        //<% if (userSystem) { %>
+        //<% if (userSystemType === 'JWT') { %>
         AUTH_PROVIDERS,
+        //<% } %>
         //<% } %>
         CentralNexusService,
         BlogsService
