@@ -25,15 +25,14 @@ require('mongoose').Promise = global.Promise;
 //<% } %>
 //<% } %>
 
-/**
- * App imports
- */
-/*/ Getting Passport configuration
- require('./Config/passport');*/
-import { App } from "./Locutus/app.interface";
-import { apiExpressApp } from './API/api.express';
 //<% if (useDB) { %>
 //<% if (dbType === 'mongo') { %>
+/**
+ * Mongoose imports:
+ * WARNING, must be imported now, so that models are already built
+ * and provided to the Mongoose instance, when used elsewhere in
+ * modules imported after here
+ */
 import "./Models/Blog";
 import { BlogDoc } from "./Models/Blog";
 import "./Models/Post";
@@ -42,6 +41,14 @@ import "./Models/User";
 import { UserDoc } from "./Models/User";
 //<% } %>
 //<% } %>
+
+/**
+ * App imports
+ */
+/*/ Getting Passport configuration
+ require('./Config/passport');*/
+import { App } from "./Locutus/app.interface";
+import { apiExpressApp } from './API/api.express';
 
 /**
  * Configuring main Express app via this class:

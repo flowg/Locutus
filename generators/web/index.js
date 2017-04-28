@@ -48,7 +48,7 @@ class LocutusWeb extends Generator {
          *
          *
          * TODO: ->>>>>   Create a /blogs endpoint to create a complete CRUD
-         * TODO: use it to finish the api.express.ts file ( error handlers left only )
+         * TODO: make the Create, Update and Delete for this endpoint
          *
          *
          *
@@ -66,7 +66,8 @@ class LocutusWeb extends Generator {
 
         // TODO: implement login feature with Passport and JWT
 
-        // TODO: implement the AssimilatedFormsModule and find a way to put the correct type on Metadata classes
+        // TODO: implement the AssimilatedFormsModule
+        // TODO: create an AssimilatedMetadata class with helper methods to basically facilitate implementing dynamic update of the metadata according to the form
 
         // TODO: enable the user to choose the view engine in Express
     }

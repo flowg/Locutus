@@ -428,8 +428,8 @@ _temp
 #                               LOCUTUS PROJECT: PUT YOUR ADDITIONS TO THIS FILE HERE                                 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-# /bin files
-!bin
+# /Scripts files
+!Scripts
 
 # Local DB for development & debugging
 /db/

@@ -16,7 +16,7 @@ const options = {
 };
 
 // Schema definition
-const UserSchema = new Schema({
+const UserSchema: Schema = new Schema({
     firstName: String,
     lastName:  String,
     email:     String,

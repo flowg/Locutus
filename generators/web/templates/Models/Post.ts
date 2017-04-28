@@ -18,7 +18,7 @@ const options = {
 };
 
 // Schema definition
-const PostSchema = new Schema({
+const PostSchema: Schema = new Schema({
     title:      String,
     author:     { type: Schema.Types.ObjectId, ref: 'User' },
     body:       String,

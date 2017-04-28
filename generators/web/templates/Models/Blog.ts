@@ -18,7 +18,7 @@ const options = {
 };
 
 // Schema definition
-const BlogSchema = new Schema({
+const BlogSchema: Schema = new Schema({
     name:       String,
     creator:    { type: Schema.Types.ObjectId, ref: 'User' },
     intro:      String,

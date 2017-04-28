@@ -1,4 +1,8 @@
-# Locutus Generator
+# Locutus Generator / WORK IN PROGRESS
+
+## Purpose
+
+A Yeoman generator for MEAN web apps with Typescript/Angular and NativeScript for Mobile native apps.
 
 ## Prerequisites
 
