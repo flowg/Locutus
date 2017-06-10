@@ -25,6 +25,9 @@ require('mongoose').Promise = global.Promise;
 //<% } %>
 //<% } %>
 
+/**
+ * App imports
+ */
 //<% if (useDB) { %>
 //<% if (dbType === 'mongo') { %>
 /**
@@ -33,21 +36,18 @@ require('mongoose').Promise = global.Promise;
  * and provided to the Mongoose instance, when used elsewhere in
  * modules imported after here
  */
-import "./Models/Blog";
-import { BlogDoc } from "./Models/Blog";
-import "./Models/Post";
-import { PostDoc } from "./Models/Post";
-import "./Models/User";
-import { UserDoc } from "./Models/User";
+import "./Models/Mongoose/Blog";
+import { BlogDoc } from "./Models/Mongoose/Blog";
+import "./Models/Mongoose/Post";
+import { PostDoc } from "./Models/Mongoose/Post";
+import "./Models/Mongoose/User";
+import { UserDoc } from "./Models/Mongoose/User";
 //<% } %>
 //<% } %>
 
-/**
- * App imports
- */
 /*/ Getting Passport configuration
  require('./Config/passport');*/
-import { App } from "./Locutus/app.interface";
+import { App } from "./app.interface";
 import { apiExpressApp } from './API/api.express';
 
 /**
@@ -203,7 +203,8 @@ class RootExpress implements App {
         // Setting up all possible folders for serving static files ( JS, CSS, Fonts, Images )
         this.app.use(express.static(path.join(__dirname, this.viewsFolder)));
         this.app.use(express.static(path.join(__dirname, 'Config')));
-        this.app.use(express.static(path.join(__dirname, 'Public')));
+        this.app.use(express.static(path.join(__dirname, 'Assets')));
+        this.app.use(express.static(path.join(__dirname, 'Models')));
         this.app.use(express.static(path.join(__dirname, 'node_modules')));
     }
 
@@ -223,6 +224,7 @@ class RootExpress implements App {
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             let err: any = new Error('Not Found');
             err.status   = 404;
+
             next(err);
         });
     }
@@ -232,18 +234,18 @@ class RootExpress implements App {
      */
     configureErrorHandler() {
         const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-            let errorToDisplay: any = {};
-
+            let stack: string = '';
             if (this.app.get('env') === 'development') {
                 this.debugErrors(err);
                 this.debugErrors(req.headers);
-                errorToDisplay = err;
+                stack = err.stack;
             }
 
             res.status(err.status || 500);
             res.render('error', {
                 message: err.message,
-                error:   errorToDisplay
+                status: err.status,
+                stack: stack
             });
         };
 

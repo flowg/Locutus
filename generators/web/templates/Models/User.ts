@@ -1,77 +1,50 @@
 'use strict';
-/**
- * Third-party imports
- */
-import * as mongoose from "mongoose";
-import { Schema, Document } from "mongoose";
 
 /**
- * Schema
+ * App imports
  */
-// Schema options
-const options = {
-    timestamps: true,
-    toJSON:     { getters: true, virtuals: true },
-    toObject:   { getters: true, virtuals: true },
-};
-
-// Schema definition
-const UserSchema: Schema = new Schema({
-    firstName: String,
-    lastName:  String,
-    email:     String,
-    role:      String
-}, options);
-
-/*
- * Document instance methods:
- * schema.methods.methodName = (..., cb) => {...}
- */
-
-/*
- * Model static methods:
- * schema.statics.methodName = (..., cb) => {...}
- */
-
-/*
- * Schema query helpers:
- * schema.query.methodName = (...) => {...}
- */
-
-/*
- * Schema indexes:
- * schema.index({fieldName: <1;-1>, ...})
- */
-
-/*
- * Schema virtuals:
- * schema.virtual('virtualName').get(function() {...}) // NO ARROW FUNCTION OR EMPTY THIS OBJECT
- * schema.virtual('virtualName').set(function(...) {...})
- * schema1.virtual('virtualName', {
- *      ref: 'schema2Name',             // The model to use
- *      localField: 'schema1Field',     // Find docs in schema2 where `schema1Field` ( in schema1,
- *                                      // SHOULD BE A FIELD WITH AN UNIQUE INDEX )
- *      foreignField: 'schema2Field'    // is equal to `schema2Field` ( in schema2 )
- *  });
- */
-UserSchema.virtual('name').get(function () {
-    return this.firstName + ' ' + this.lastName;
-});
+import {
+    AssimilatedModel,
+    AssimilatedModelParams,
+    Required
+} from './assimilated-model.class';
 
 /**
- * Document interface for TypeScript:
- * Don't forget the virtuals & put the associated interfaces
- * in fields holding references to other collections
+ * This is a Model class for the whole app :
+ * it will be used as the reference Model for the Front-End,
+ * another driver-specific Model will be used for mongoose in the Back-End
  */
-export interface UserDoc extends Document {
+export class User extends AssimilatedModel {
+    @Required
     firstName: string;
+
+    @Required
     lastName: string;
-    name: string;
-    email: string;
+
     role: string;
+    email: string;
+
+    get name(): string {
+        return this.firstName + ' ' + this.lastName;
+    }
+
+    constructor(params: UserParams) {
+        super(params);
+
+        // Defining required properties
+        this.firstName = this.defineModelProperty("firstName", params.firstName);
+        this.lastName = this.defineModelProperty("lastName", params.lastName);
+
+        // Defining optional properties
+        this.email = this.defineModelProperty("email", params.email, '');
+        this.role = this.defineModelProperty("role", params.role, '');
+    }
 }
 
-/**
- * Model compilation
- */
-mongoose.model('User', UserSchema);
+export interface UserParams extends AssimilatedModelParams {
+    firstName: string;
+    lastName: string;
+    name?: string;
+    email?: string;
+    role?: string;
+}

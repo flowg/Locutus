@@ -9,6 +9,7 @@ import { Router } from "express-serve-static-core";
  * Third-party imports ( https://www.npmjs.com/~types )
  */
 import * as debug from "debug";
+import { Document, Model } from "mongoose";
 
 /**
  * Endpoint interface designed for all *Endpoint classes in the /API folder.
@@ -18,6 +19,9 @@ export interface Endpoint {
     router: Router;
     debug: debug.IDebugger;
     endpointURL: string;
+    model: Model<Document>;
+    id: string;
 
+    initParamsHandlers(): void;
     initRoutesHandlers(): void;
 }

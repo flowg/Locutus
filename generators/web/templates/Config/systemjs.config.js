@@ -1,5 +1,5 @@
 /**
- * System configuration for Angular samples
+ * System configuration for Angular samples.
  * Adjust as necessary for your application needs.
  */
 (function (global) {
@@ -12,6 +12,7 @@
         map:      {
             // Our app is within the /Angular folder, which is already served as a static folder by Express
             app: '.',
+            Models: '.',
 
             // Angular bundles
             '@angular/core':                     'npm:@angular/core/bundles/core.umd.js',
@@ -34,6 +35,9 @@
         packages: {
             app:            {
                 main:             './main.js',
+                defaultExtension: 'js'
+            },
+            Models: {
                 defaultExtension: 'js'
             },
             //<% if (useJWT) { %>

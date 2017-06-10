@@ -1,3 +1,19 @@
 <h1>Hello world ! I'm {{name}}</h1>
 
 <button type="button" (click)="getBlogs()">GET BLOGS</button>
+<button type="button" (click)="createBlog()">CREATE A NEW BLOG</button>
+
+<form id="blogs-display" *ngIf="blogs" #formBlogs>
+    <div class="blog" *ngFor="let blog of blogs">
+        <p>{{blog.name}}</p>
+        <input type="text" class="form-control" id="name" [(ngModel)]="blog.name" name="name">
+        <button type="submit" [disabled]="originalName === blog.name" (click)="updateBlog(blog)">UPDATE BLOG</button>
+        <button type="submit" (click)="deleteBlog(blog)">DELETE BLOG</button>
+        <p>{{blog.creator.name}}</p>
+        <ul>
+            <li *ngFor="let post of blog.posts">
+                {{post | json}}
+            </li>
+        </ul>
+    </div>
+</form>

@@ -65,7 +65,7 @@ export class CentralNexusService {
         return request;
     }
 
-    sendPostRequest(url: string, body: any, options: RequestOptions = new RequestOptions(), transform: (val: any) => any/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, secure: boolean/*<% } %>*//*<% } %>*/) {
+    sendPostRequest(url: string, body: any, options: RequestOptions = this.options, transform: (val: any) => any/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, secure: boolean/*<% } %>*//*<% } %>*/) {
         let request: Observable<any>;
         url = this.apiPrefix + '/' + url;
 
@@ -94,7 +94,7 @@ export class CentralNexusService {
         return request;
     }
 
-    sendPutRequest(url: string, body: any, options: RequestOptions = new RequestOptions(), transform: (val: any) => any/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, secure: boolean/*<% } %>*//*<% } %>*/) {
+    sendPutRequest(url: string, body: any, options: RequestOptions = this.options, transform: (val: any) => any/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, secure: boolean/*<% } %>*//*<% } %>*/) {
         let request: Observable<any>;
         url = this.apiPrefix + '/' + url;
 
@@ -123,11 +123,42 @@ export class CentralNexusService {
         return request;
     }
 
+    sendDeleteRequest(url: string, options: RequestOptions = this.options, transform: (val: any) => any/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, secure: boolean/*<% } %>*//*<% } %>*/) {
+        let request: Observable<any>;
+        url = this.apiPrefix + '/' + url;
+
+        //<% if (userSystem) { %>
+        //<% if (userSystemType === 'JWT') { %>
+        if (secure) {
+            request = this.authHttp.delete(url, options)
+                .map((res: Response) => res.json())
+                .map(transform)
+                .catch(this.handleError);
+        } else {
+            request = this.http.delete(url, options)
+                .map((res: Response) => res.json())
+                .map(transform)
+                .catch(this.handleError);
+        }
+        //<% } %>
+        //<% } %>
+        //<% if (!userSystem) { %>
+        request = this.http.delete(url, options)
+            .map((res: Response) => res.json())
+            .map(transform)
+            .catch(this.handleError);
+        //<% } %>
+
+        return request;
+    }
+
     private handleError(error: any): Observable<any> {
         console.log(error);
         // TODO: In production, implement a real logging service, to supplement the one on the Back-End
         let errMsg = (error._body) ? error._body :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+
+        console.log(JSON.parse(errMsg));
 
         return Observable.throw(error);
     }

@@ -6,6 +6,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 /**
  * Third-party imports
@@ -24,7 +25,11 @@ import { BlogsService } from "./blogs.service";
 import { CentralNexusService } from "./central-nexus.service";
 
 @NgModule({
-    imports:      [ BrowserModule, HttpModule ],
+    imports:      [
+        BrowserModule,
+        HttpModule,
+        FormsModule
+    ],
     declarations: [ RootComponent ],
     bootstrap:    [ RootComponent ],
     providers:    [

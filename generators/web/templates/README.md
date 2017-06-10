@@ -1,4 +1,4 @@
-# <%= appName %>
+# generator locutus playground
 
 ## Locutus Workflow
 

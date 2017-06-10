@@ -8,7 +8,8 @@ import {
     Application,
     Request,
     Response,
-    NextFunction
+    NextFunction,
+    Router
 } from "express-serve-static-core";
 
 /**
@@ -22,7 +23,8 @@ import * as bodyParser from "body-parser";
  * App imports
  */
 import { blogsRouter } from "./blogs.endpoint";
-import { SubApp } from "../Locutus/app.interface";
+import { SubApp } from "../app.interface";
+import { APIError, APIErrorParams } from "./api-error.class";
 
 /**
  * Configuring Express sub-app in charge with the API, via this class:
@@ -88,14 +90,32 @@ class ApiExpress implements SubApp {
      * Configuring sub-app routing for the API
      */
     configureRouting() {
+        /*
+         * Please add all your endpoints routers
+         * in this array    ||
+         *                  ||
+         *                  ||
+         *                  \/
+         */
+        let endpointsRouters: Router[] = [
+            blogsRouter
+        ];
+
         // Mounting all endpoints
-        this.app.use(blogsRouter);
+        this.app.use('/', endpointsRouters);
 
         // If you get here, no route has matched : it may be a bad URL or bad method
         // TODO: adapt this to API global errors
         this.app.use((req: Request, res: Response, next: NextFunction) => {
-            let err: any = new Error('Not Found');
-            err.status   = 404;
+            let errParams: APIErrorParams = {
+                url:     req.baseUrl + req.url,
+                method:  req.method,
+                status:  404,
+                message: 'Not Found: it may be a bad URL or bad method',
+                env:     this.app.get('env')
+            };
+            let err: any                  = new APIError(errParams);
+
             next(err);
         });
     }
@@ -105,19 +125,12 @@ class ApiExpress implements SubApp {
      */
     configureErrorHandler() {
         const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-            let errorToDisplay: any = {};
-
             if (this.app.get('env') === 'development') {
                 this.debugErrors(err);
                 this.debugErrors(req.headers);
-                errorToDisplay = err;
             }
 
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error:   errorToDisplay
-            });
+            res.status(err.status || 500).json(err);
         };
 
         this.app.use(errorHandler);

@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Insert-description-here",
   "scripts": {
-    "tsc": "tsc | node ./Scripts/terminal-display.js --prefix=tsc --color=cyan",
-    "tsc:w": "tsc -w | node ./Scripts/terminal-display.js --prefix=tsc --color=cyan",
-    "sass": "node-sass --output-style compressed -o Angular Angular 2>&1 ^| node ./Scripts/terminal-display.js --prefix=sass --color=green",
-    "sass:w": "node-sass -w --output-style compressed -o Angular Angular 2>&1 ^| node ./Scripts/terminal-display.js --prefix=sass --color=green",
-    "lint": "tslint './**/*.ts' -t verbose -e './node_modules/**/*.ts' | node ./Scripts/terminal-display.js --prefix=tslint --color=red",
-    "lint:w": "onchange './**/*.ts' -w -i -- npm run lint",
+    "tsc": "tsc | node ./bin/terminal-display.js --prefix=tsc --color=cyan",
+    "tsc:w": "tsc -w | node ./bin/terminal-display.js --prefix=tsc --color=cyan",
+    "sass": "node-sass --output-style compressed -o Angular Angular 2>&1 ^| node ./bin/terminal-display.js --prefix=sass --color=green",
+    "sass:w": "node-sass -w --output-style compressed -o Angular Angular 2>&1 ^| node ./bin/terminal-display.js --prefix=sass --color=green",
+    "lint": "tslint '.*.ts' -t verbose -e './node_modules*.ts' | node ./bin/terminal-display.js --prefix=tslint --color=red",
+    "lint:w": "onchange '.*.ts' -w -i -- npm run lint",
     "watch": "concurrently --kill-others --prefix '\b' 'npm run lint:w' 'npm run tsc:w' 'npm run sass:w'",
-    "start": "npm run lint && npm run tsc && npm run sass && node ./Scripts/start-express.js",
+    "start": "npm run lint && npm run tsc && npm run sass && node ./bin/start-express.js",
     "copy-to-aot": "node Angular/aot/copy-dist-files.js",
     "aot-compile": "ngc -p Angular/aot/tsconfig-aot.json",
     "tree-shake": "rollup -c Angular/aot/rollup-config.js",
@@ -59,6 +59,7 @@
     "@angular/language-service": "^4.0.0",
     "@types/body-parser": "0.0.34",
     "@types/cookie-parser": "^1.3.30",
+    "@types/core-js": "^0.9.41",
     "@types/debug": "0.0.29",
     "@types/express": "^4.0.35",
     "@types/mongoose": "^4.7.6",
@@ -79,5 +80,8 @@
     "typescript": "^2.2.2"
   },
   "repository": {},
-  "main": "index.js"
+  "main": "index.js",
+  "bin": {
+    "<%= appName %>": "start-express.js"
+  }
 }
