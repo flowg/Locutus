@@ -22,7 +22,7 @@ import { Document, Model } from "mongoose";
 /**
  * App imports
  */
-import { BlogDoc } from "../Models/Blog";
+import { BlogDoc } from "../Models/Mongoose/Blog";
 import { Endpoint } from "./endpoint.interface";
 
 /**
@@ -140,7 +140,7 @@ class BlogsEndpoint implements Endpoint {
                 return next(err);
             }
 
-            this.model.find({_id: createdBlog._id}).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
+            this.model.find({ _id: createdBlog._id }).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
                 if (err) {
                     return next(err);
                 }
@@ -166,7 +166,7 @@ class BlogsEndpoint implements Endpoint {
                 return next(err);
             }
 
-            res.json({success: true, deleted: this.id});
+            res.json({ success: true, deleted: this.id });
         });
     };
 }
