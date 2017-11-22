@@ -22,7 +22,7 @@ import * as bodyParser from "body-parser";
 /**
  * App imports
  */
-import { blogsRouter } from "./blogs.endpoint";
+import { blogsRouter } from "./Endpoints/__blogs.endpoint";
 import { SubApp } from "../app.interface";
 import { APIError, APIErrorParams } from "./api-error.class";
 
@@ -38,8 +38,8 @@ class ApiExpress implements SubApp {
 
     constructor() {
         this.app         = express();
-        this.debug       = debug('api');
-        this.debugErrors = debug('API-ERROR');
+        this.debug       = debug( 'api' );
+        this.debugErrors = debug( 'API-ERROR' );
 
         this.init();
     }
@@ -61,10 +61,10 @@ class ApiExpress implements SubApp {
      * since the env setting won't be inherited
      */
     configureEnv() {
-        let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
-        if (env) {
-            env = env.split('=').pop();
-            this.app.set('env', env);
+        let env = process.argv.filter( el => el.indexOf( '--env=' ) > -1 ).pop();
+        if ( env ) {
+            env = env.split( '=' ).pop();
+            this.app.set( 'env', env );
         }
     }
 
@@ -80,10 +80,10 @@ class ApiExpress implements SubApp {
      */
     configureMiddleware() {
         // This app now parses automatically only application/json bodies, available at req.body
-        this.app.use(bodyParser.json());
+        this.app.use( bodyParser.json() );
 
         // This app now parses automatically the Cookie request header, populates req.cookies
-        this.app.use(cookieParser());
+        this.app.use( cookieParser() );
     }
 
     /**
@@ -102,38 +102,37 @@ class ApiExpress implements SubApp {
         ];
 
         // Mounting all endpoints
-        this.app.use('/', endpointsRouters);
+        this.app.use( '/', endpointsRouters );
 
         // If you get here, no route has matched : it may be a bad URL or bad method
-        // TODO: adapt this to API global errors
-        this.app.use((req: Request, res: Response, next: NextFunction) => {
+        this.app.use( ( req: Request, res: Response, next: NextFunction ) => {
             let errParams: APIErrorParams = {
                 url:     req.baseUrl + req.url,
                 method:  req.method,
                 status:  404,
                 message: 'Not Found: it may be a bad URL or bad method',
-                env:     this.app.get('env')
+                env:     this.app.get( 'env' )
             };
-            let err: any                  = new APIError(errParams);
+            let err: any                  = new APIError( errParams );
 
-            next(err);
-        });
+            next( err );
+        } );
     }
 
     /**
      * Configuring error handler
      */
     configureErrorHandler() {
-        const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-            if (this.app.get('env') === 'development') {
-                this.debugErrors(err);
-                this.debugErrors(req.headers);
+        const errorHandler = ( err: any, req: Request, res: Response, next: NextFunction ) => {
+            if ( this.app.get( 'env' ) === 'development' ) {
+                this.debugErrors( err );
+                this.debugErrors( req.headers );
             }
 
-            res.status(err.status || 500).json(err);
+            res.status( err.status || 500 ).json( err );
         };
 
-        this.app.use(errorHandler);
+        this.app.use( errorHandler );
     }
 }
 

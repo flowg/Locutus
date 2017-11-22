@@ -22,8 +22,8 @@ import { Document, Model } from "mongoose";
 /**
  * App imports
  */
-import { BlogDoc } from "../Models/Mongoose/Blog";
-import { Endpoint } from "./endpoint.interface";
+import { BlogDoc } from "../../Models/Mongoose/Blog";
+import { Endpoint } from "../endpoint.interface";
 
 /**
  * Configuring the endpoint for the 'blogs' resource via this class:

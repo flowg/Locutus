@@ -6,7 +6,7 @@
     System.config({
         paths:    {
             // paths serve as alias, but /node_modules is already served as a static folder by Express
-            'npm:': '.'
+            'npm:': ''
         },
         // map tells the System loader where to look for things
         map:      {
