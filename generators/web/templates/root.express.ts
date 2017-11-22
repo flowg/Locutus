@@ -21,7 +21,8 @@ import * as favicon from "serve-favicon";
 //<% if (useDB) { %>
 //<% if (dbType === 'mongo') { %>
 import * as mongoose from "mongoose";
-require('mongoose').Promise = global.Promise;
+
+require( 'mongoose' ).Promise = global.Promise;
 //<% } %>
 //<% } %>
 
@@ -62,9 +63,9 @@ class RootExpress implements App {
     viewsFolder: string;
 
     constructor() {
-        this.app = express();
-        this.debug = debug('root');
-        this.debugErrors = debug('ROOT-ERROR');
+        this.app         = express();
+        this.debug       = debug( 'root' );
+        this.debugErrors = debug( 'ROOT-ERROR' );
 
         this.init();
     }
@@ -90,10 +91,10 @@ class RootExpress implements App {
      * since the env setting won't be inherited
      */
     configureEnv() {
-        let env = process.argv.filter(el => el.indexOf('--env=') > -1).pop();
-        if (env) {
-            env = env.split('=').pop();
-            this.app.set('env', env);
+        let env = process.argv.filter( el => el.indexOf( '--env=' ) > -1 ).pop();
+        if ( env ) {
+            env = env.split( '=' ).pop();
+            this.app.set( 'env', env );
         }
     }
 
@@ -110,10 +111,10 @@ class RootExpress implements App {
      * which engine to use for .html files
      */
     configureViewEngine() {
-        this.viewsFolder = (this.app.get('env') === 'development') ? 'Angular' : 'Angular/aot';
-        this.app.set('views', path.join(__dirname, this.viewsFolder));
-        this.app.set('view engine', 'html');
-        this.app.engine('html', require('ejs').renderFile);
+        this.viewsFolder = ( this.app.get( 'env' ) === 'development' ) ? 'Angular' : 'Angular/aot';
+        this.app.set( 'views', path.join( __dirname, this.viewsFolder ) );
+        this.app.set( 'view engine', 'html' );
+        this.app.engine( 'html', require( 'ejs' ).renderFile );
     }
 
     //<% if (useDB) { %>
@@ -125,42 +126,42 @@ class RootExpress implements App {
         const dbName   = '<%= dbName %>';
         //<% if (dbType === 'mongo') { %>
         const mongoURL = `mongodb://${process.env.MONGOHOST ? process.env.MONGOHOST : 'localhost'}/${dbName}`;
-        mongoose.connect(mongoURL);
+        mongoose.connect( mongoURL, { useMongoClient: true } );
 
-        mongoose.connection.once('open', () => {
-            let Blog = mongoose.model('Blog');
-            let User = mongoose.model('User');
-            let Post = mongoose.model('Post');
+        mongoose.connection.once( 'open', () => {
+            let Blog = mongoose.model( 'Blog' );
+            let User = mongoose.model( 'User' );
+            let Post = mongoose.model( 'Post' );
 
-            let userDoc = new User({
+            let userDoc = new User( {
                 firstName: 'Tata',
                 lastName:  'Toto'
-            });
-            let blogDoc = new Blog({
+            } );
+            let blogDoc = new Blog( {
                 name:    'My Blog',
                 creator: userDoc._id
-            });
-            let postDoc = new Post({
+            } );
+            let postDoc = new Post( {
                 author: userDoc._id,
                 blog:   blogDoc._id
-            });
+            } );
 
-            userDoc.save((err: Error, user: UserDoc) => {
-                this.debug(user);
-            });
+            userDoc.save( ( err: Error, user: UserDoc ) => {
+                this.debug( user );
+            } );
 
-            blogDoc.save((err: Error, blog: BlogDoc) => {
-                this.debug(blog);
-            });
+            blogDoc.save( ( err: Error, blog: BlogDoc ) => {
+                this.debug( blog );
+            } );
 
-            postDoc.save((err: Error, post: PostDoc) => {
-                this.debug(post);
+            postDoc.save( ( err: Error, post: PostDoc ) => {
+                this.debug( post );
 
-                Blog.find({}).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
-                    this.debug(blogs);
-                });
-            });
-        });
+                Blog.find( {} ).populate( 'posts creator' ).exec( ( error: Error, blogs: BlogDoc[] ) => {
+                    this.debug( blogs );
+                } );
+            } );
+        } );
 
         /*const store = new MongoDBStore(
          {
@@ -173,6 +174,7 @@ class RootExpress implements App {
          });*/
         //<% } %>
     }
+
     //<% } %>
 
     /**
@@ -180,10 +182,10 @@ class RootExpress implements App {
      */
     configureMiddleware() {
         // Instructs Express to serve your favicon
-        this.app.use(favicon(path.join(__dirname, 'Assets/Images', 'favicon.ico')));
+        this.app.use( favicon( path.join( __dirname, 'Assets/Images', 'favicon.ico' ) ) );
 
         // Setting logging middleware
-        this.app.use(logger('dev'));
+        this.app.use( logger( 'dev' ) );
 
         /*app.use(session({
          cookie: {
@@ -201,11 +203,11 @@ class RootExpress implements App {
          app.use(passport.session());*/
 
         // Setting up all possible folders for serving static files ( JS, CSS, Fonts, Images )
-        this.app.use(express.static(path.join(__dirname, this.viewsFolder)));
-        this.app.use(express.static(path.join(__dirname, 'Config')));
-        this.app.use(express.static(path.join(__dirname, 'Assets')));
-        this.app.use(express.static(path.join(__dirname, 'Models')));
-        this.app.use(express.static(path.join(__dirname, 'node_modules')));
+        this.app.use( express.static( path.join( __dirname, this.viewsFolder ) ) );
+        this.app.use( express.static( path.join( __dirname, 'Config' ) ) );
+        this.app.use( express.static( path.join( __dirname, 'Assets' ) ) );
+        this.app.use( express.static( path.join( __dirname, 'Models' ) ) );
+        this.app.use( express.static( path.join( __dirname, 'node_modules' ) ) );
     }
 
     /**
@@ -213,43 +215,43 @@ class RootExpress implements App {
      */
     configureRouting() {
         // Mounting the sup-app dedicated to serving the API
-        this.app.use('/api', apiExpressApp);
+        this.app.use( '/api', apiExpressApp );
 
         // Delegating routing to Angular router for non API routes
-        this.app.get('/*', (req: Request, res: Response, next: NextFunction) => {
-            res.render('index');
-        });
+        this.app.get( '/*', ( req: Request, res: Response, next: NextFunction ) => {
+            res.render( 'index' );
+        } );
 
         // If you get here, no route has matched : catch 404 and forward to error handlers
-        this.app.use((req: Request, res: Response, next: NextFunction) => {
-            let err: any = new Error('Not Found');
+        this.app.use( ( req: Request, res: Response, next: NextFunction ) => {
+            let err: any = new Error( 'Not Found' );
             err.status   = 404;
 
-            next(err);
-        });
+            next( err );
+        } );
     }
 
     /**
      * Configuring error handler
      */
     configureErrorHandler() {
-        const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+        const errorHandler = ( err: any, req: Request, res: Response, next: NextFunction ) => {
             let stack: string = '';
-            if (this.app.get('env') === 'development') {
-                this.debugErrors(err);
-                this.debugErrors(req.headers);
+            if ( this.app.get( 'env' ) === 'development' ) {
+                this.debugErrors( err );
+                this.debugErrors( req.headers );
                 stack = err.stack;
             }
 
-            res.status(err.status || 500);
-            res.render('error', {
+            res.status( err.status || 500 );
+            res.render( 'error', {
                 message: err.message,
-                status: err.status,
-                stack: stack
-            });
+                status:  err.status,
+                stack:   stack
+            } );
         };
 
-        this.app.use(errorHandler);
+        this.app.use( errorHandler );
     }
 }
 
@@ -257,5 +259,5 @@ class RootExpress implements App {
  * Creating the app via instantiation
  * and exporting it
  */
-const rootExpress: RootExpress = new RootExpress();
+const rootExpress: RootExpress           = new RootExpress();
 export const rootExpressApp: Application = rootExpress.app;
