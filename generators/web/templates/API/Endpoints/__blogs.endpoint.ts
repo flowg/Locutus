@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Express imports
@@ -22,11 +22,11 @@ import { Document, Model } from "mongoose";
 /**
  * App imports
  */
-import { BlogDoc } from "../../Models/__Blog";
+import { BlogDoc } from "Models/__Blog";
 import { Endpoint } from "../endpoint.interface";
 
 /**
- * Configuring the endpoint for the 'blogs' resource via this class:
+ * Configuring the endpoint for the "blogs" resource via this class:
  *
  * - Firstly, create a specific private handler for a route and an HTTP method
  * WARNING: handlers must be properties holding a method with the arrow syntax,
@@ -39,14 +39,14 @@ import { Endpoint } from "../endpoint.interface";
 class BlogsEndpoint implements Endpoint {
     router: Router;
     debug: debug.IDebugger;
-    endpointURL: string = '/blogs';
+    endpointURL = "/blogs";
     model: Model<Document>;
     id: string;
 
     constructor() {
         this.router = express.Router();
-        this.debug  = debug('blogs-endpoint');
-        this.model  = mongoose.model('Blog');
+        this.debug  = debug( "blogs-endpoint" );
+        this.model  = mongoose.model( "Blog" );
 
         this.initParamsHandlers();
         this.initRoutesHandlers();
@@ -58,10 +58,10 @@ class BlogsEndpoint implements Endpoint {
      */
     initParamsHandlers() {
         // Initializing handler for the blog :id parameter
-        this.router.param('id', (req, res, next, id) => {
+        this.router.param( "id", ( req, res, next, id ) => {
             this.id = id;
             next();
-        });
+        } );
     }
 
     /**
@@ -69,15 +69,15 @@ class BlogsEndpoint implements Endpoint {
      * routes with handlers
      */
     initRoutesHandlers() {
-        // Initializing handlers for the '/blogs' URL
-        this.router.route(this.endpointURL)
-            .post(this.createNewBlog)
-            .get(this.getAllBlogs);
+        // Initializing handlers for the "/blogs" URL
+        this.router.route( this.endpointURL )
+            .post( this.createNewBlog )
+            .get( this.getAllBlogs );
 
-        // Initializing handlers for the '/blogs/:id' URL
-        this.router.route(this.endpointURL + '/:id')
-            .delete(this.deleteThisBlog)
-            .put(this.updateThisBlog);
+        // Initializing handlers for the "/blogs/:id" URL
+        this.router.route( this.endpointURL + "/:id" )
+            .delete( this.deleteThisBlog )
+            .put( this.updateThisBlog );
     }
 
     /******************************************************************************************************************\
@@ -92,82 +92,82 @@ class BlogsEndpoint implements Endpoint {
      * Handler for the GET HTTP method:
      * retrieves all blogs in DB
      *
-     * @URL '/blogs'
+     * @URL "/blogs"
      *
      * @param req
      * @param res
      * @param next
      */
-    private getAllBlogs: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-        this.model.find({}).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
-            res.json(blogs);
-        });
+    private getAllBlogs: RequestHandler = ( req: Request, res: Response, next: NextFunction ) => {
+        this.model.find( {} ).populate( "posts creator" ).exec( ( error: Error, blogs: BlogDoc[] ) => {
+            res.json( blogs );
+        } );
     };
 
     /**
      * Handler for the PUT HTTP method:
      * updates the blog with ID id
      *
-     * @URL '/blogs/:id'
+     * @URL "/blogs/:id"
      *
      * @param req
      * @param res
      * @param next
      */
-    private updateThisBlog: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-        this.model.findByIdAndUpdate(this.id, { $set: { name: req.body.name } }, { new: true }, (err, updatedBlog) => {
-            if (err) {
-                return next(err);
+    private updateThisBlog: RequestHandler = ( req: Request, res: Response, next: NextFunction ) => {
+        this.model.findByIdAndUpdate( this.id, { $set: { name: req.body.name } }, { new: true }, ( err, updatedBlog ) => {
+            if ( err ) {
+                return next( err );
             }
 
-            res.json(updatedBlog);
-        });
+            res.json( updatedBlog );
+        } );
     };
 
     /**
      * Handler for the POST HTTP method:
      * creates a new blog
      *
-     * @URL '/blogs'
+     * @URL "/blogs"
      *
      * @param req
      * @param res
      * @param next
      */
-    private createNewBlog: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-        this.model.create(req.body, (err, createdBlog: BlogDoc) => {
-            if (err) {
-                return next(err);
+    private createNewBlog: RequestHandler = ( req: Request, res: Response, next: NextFunction ) => {
+        this.model.create( req.body, ( err, createdBlog: BlogDoc ) => {
+            if ( err ) {
+                return next( err );
             }
 
-            this.model.find({ _id: createdBlog._id }).populate('posts creator').exec((error: Error, blogs: BlogDoc[]) => {
-                if (err) {
-                    return next(err);
+            this.model.find( { _id: createdBlog._id } ).populate( "posts creator" ).exec( ( error: Error, blogs: BlogDoc[] ) => {
+                if ( err ) {
+                    return next( err );
                 }
 
-                res.json(blogs.pop());
-            });
-        });
+                res.json( blogs.pop() );
+            } );
+        } );
     };
 
     /**
      * Handler for the DELETE HTTP method:
      * deletes the blog with ID id
      *
-     * @URL '/blogs/:id'
+     * @URL "/blogs/:id"
      *
      * @param req
      * @param res
      * @param next
      */
-    private deleteThisBlog: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-        this.model.remove({ _id: this.id }, (err) => {
-            if (err) {
-                return next(err);
+    private deleteThisBlog: RequestHandler = ( req: Request, res: Response, next: NextFunction ) => {
+        this.model.remove( { _id: this.id }, ( err ) => {
+            if ( err ) {
+                return next( err );
             }
 
-            res.json({ success: true, deleted: this.id });
-        });
+            res.json( { success: true, deleted: this.id } );
+        } );
     };
 }
 
