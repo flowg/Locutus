@@ -6,22 +6,20 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 /**
+ * App imports
+ */
+import { SCHEMA_GLOBAL_OPTIONS } from "Models/schema.options";
+
+/**
  * Schema
  */
-// Schema options
-const options = {
-    timestamps: true,
-    toJSON:     { getters: true, virtuals: true },
-    toObject:   { getters: true, virtuals: true },
-};
-
 // Schema definition
 const UserSchema: Schema = new Schema({
     firstName: String,
     lastName:  String,
     email:     String,
     role:      String
-}, options);
+}, SCHEMA_GLOBAL_OPTIONS);
 
 /*
  * Document instance methods:
@@ -59,16 +57,20 @@ UserSchema.virtual('name').get(function () {
 });
 
 /**
- * Document interface for TypeScript:
- * Don't forget the virtuals & put the associated interfaces
- * in fields holding references to other collections
+ * Interfaces for TypeScript:
+ * - Add the virtuals as optional properties
+ * - The first one will mostly be used for creation in the Front-End
+ * - The second one will be used in both Back and Front
  */
-export interface UserDoc extends Document {
+export interface User {
     firstName: string;
     lastName: string;
     name?: string;
     email: string;
     role: string;
+}
+
+export interface UserDoc extends User, Document {
 }
 
 /**

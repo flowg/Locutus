@@ -22,7 +22,7 @@ import { Document, Model } from "mongoose";
 /**
  * App imports
  */
-import { BlogDoc } from "../../Models/Mongoose/Blog";
+import { BlogDoc } from "../../Models/__Blog";
 import { Endpoint } from "../endpoint.interface";
 
 /**

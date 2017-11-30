@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
  * App imports
  */
 import { CentralNexusService } from './central-nexus.service';
-import { Blog } from "Models/Blog";
+import { Blog, BlogDoc } from "Models/__Blog";
 
 @Injectable()
 export class BlogsService {
@@ -20,7 +20,7 @@ export class BlogsService {
         return this.nexus.sendGetRequest('blogs', (data: any) => data/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, true/*<% } %>*//*<% } %>*/);
     }
 
-    updateBlog(newBlog: Blog) {
+    updateBlog(newBlog: BlogDoc) {
         return this.nexus.sendPutRequest(`blogs/${newBlog.id}`, newBlog, undefined, (data: any) => data/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, true/*<% } %>*//*<% } %>*/);
     }
 
@@ -28,7 +28,7 @@ export class BlogsService {
         return this.nexus.sendPostRequest(`blogs`, newBlog, undefined, (data: any) => data/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, true/*<% } %>*//*<% } %>*/);
     }
 
-    deleteBlog(newBlog: Blog) {
+    deleteBlog(newBlog: BlogDoc) {
         return this.nexus.sendDeleteRequest(`blogs/${newBlog.id}`, undefined, (data: any) => data/*<% if (userSystem) { %>*//*<% if (userSystemType === 'JWT') { %>*/, true/*<% } %>*//*<% } %>*/);
     }
 }

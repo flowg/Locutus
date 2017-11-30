@@ -37,12 +37,12 @@ require( 'mongoose' ).Promise = global.Promise;
  * and provided to the Mongoose instance, when used elsewhere in
  * modules imported after here
  */
-import "./Models/Mongoose/Blog";
-import { BlogDoc } from "./Models/Mongoose/Blog";
-import "./Models/Mongoose/Post";
-import { PostDoc } from "./Models/Mongoose/Post";
-import "./Models/Mongoose/User";
-import { UserDoc } from "./Models/Mongoose/User";
+import "./Models/__Blog";
+import { BlogDoc } from "./Models/__Blog";
+import "./Models/__Post";
+import { PostDoc } from "./Models/__Post";
+import "./Models/__User";
+import { UserDoc } from "./Models/__User";
 //<% } %>
 //<% } %>
 

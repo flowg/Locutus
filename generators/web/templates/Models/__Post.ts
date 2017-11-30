@@ -4,19 +4,17 @@
  */
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { BlogDoc } from "./Blog";
-import { UserDoc } from "./User";
+
+/**
+ * App imports
+ */
+import { BlogDoc } from "./__Blog";
+import { UserDoc } from "./__User";
+import { SCHEMA_GLOBAL_OPTIONS } from "Models/schema.options";
 
 /**
  * Schema
  */
-// Schema options
-const options = {
-    timestamps: true,
-    toJSON:     { getters: true, virtuals: true },
-    toObject:   { getters: true, virtuals: true },
-};
-
 // Schema definition
 const PostSchema: Schema = new Schema({
     title:      String,
@@ -24,7 +22,7 @@ const PostSchema: Schema = new Schema({
     body:       String,
     blog:       { type: Schema.Types.ObjectId, ref: 'Blog' },
     visibility: { type: Boolean, default: true }
-}, options);
+}, SCHEMA_GLOBAL_OPTIONS);
 
 /*
  * Document instance methods:
@@ -59,16 +57,20 @@ const PostSchema: Schema = new Schema({
  */
 
 /**
- * Document interface for TypeScript:
- * Don't forget the virtuals & put the associated interfaces
- * in fields holding references to other collections
+ * Interfaces for TypeScript:
+ * - Add the virtuals as optional properties
+ * - The first one will mostly be used for creation in the Front-End
+ * - The second one will be used in both Back and Front
  */
-export interface PostDoc extends Document {
+export interface Post {
     title: string;
     author: UserDoc;
     body: string;
     blog: BlogDoc;
     visibility?: boolean;
+}
+
+export interface PostDoc extends Post, Document {
 }
 
 /**
