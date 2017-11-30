@@ -12,7 +12,7 @@ let env = process.argv.filter(el => el.indexOf("--env=") > -1).pop();
 env     = env ? env.split("=").pop().toUpperCase() : 'development';
 
 let debug = process.argv.filter(el => el.indexOf("--debug=") > -1).pop();
-debug     = debug ? debug.split("=").pop() : '*,-express:*';
+debug     = debug ? debug.split("=").pop() : '*,-express:*,-send';
 
 // Setting up a fake TTY to get debug module display properly
 let shell = process.platform === 'win32' ? 'cmd.exe' : '/bin/sh';

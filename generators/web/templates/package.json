@@ -21,17 +21,17 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@angular/animations": "^5.0.2",
-    "@angular/common": "^5.0.2",
-    "@angular/compiler": "^5.0.2",
-    "@angular/compiler-cli": "^5.0.2",
-    "@angular/core": "^5.0.2",
-    "@angular/forms": "^5.0.2",
-    "@angular/http": "^5.0.2",
-    "@angular/platform-browser": "^5.0.2",
-    "@angular/platform-browser-dynamic": "^5.0.2",
-    "@angular/platform-server": "^5.0.2",
-    "@angular/router": "^5.0.2",
+    "@angular/animations": "^5.0.3",
+    "@angular/common": "^5.0.3",
+    "@angular/compiler": "^5.0.3",
+    "@angular/compiler-cli": "^5.0.3",
+    "@angular/core": "^5.0.3",
+    "@angular/forms": "^5.0.3",
+    "@angular/http": "^5.0.3",
+    "@angular/platform-browser": "^5.0.3",
+    "@angular/platform-browser-dynamic": "^5.0.3",
+    "@angular/platform-server": "^5.0.3",
+    "@angular/router": "^5.0.3",
     "angular-in-memory-web-api": "~0.5.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
@@ -41,7 +41,7 @@
     "ejs": "^2.5.7",
     //<% if (useDB) { %>
     //<% if (dbType === 'mongo') { %>
-    "mongoose": "^4.13.4",
+    "mongoose": "^4.13.5",
     //<% } %>
     //<% } %>
     //<% if (userSystem) { %>
@@ -56,13 +56,13 @@
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
-    "@angular/language-service": "^5.0.2",
+    "@angular/language-service": "^5.0.3",
     "@types/body-parser": "1.16.8",
     "@types/cookie-parser": "^1.4.1",
     "@types/core-js": "^0.9.43",
     "@types/debug": "0.0.30",
     "@types/express": "^4.0.39",
-    "@types/mongoose": "^4.7.27",
+    "@types/mongoose": "^4.7.28",
     "@types/morgan": "^1.7.35",
     "@types/node": "^8.0.53",
     "@types/serve-favicon": "^2.2.30",
@@ -72,12 +72,12 @@
     "fs-extra": "^4.0.2",
     "node-sass": "^4.7.2",
     "onchange": "^3.2.1",
-    "rollup": "^0.51.8",
+    "rollup": "^0.52.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.2"
   },
   "repository": {},
   "main": "index.js",
